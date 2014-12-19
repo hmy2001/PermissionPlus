@@ -1,0 +1,24 @@
+name: PermissionPlus
+main: PermissionPlus\Main
+version: 1.3.1
+api: [1.8.0]
+load: STARTUP
+author: Hmy&Bios
+authors: [Hmy&Bios]
+description: PermissionPlus.
+commands:
+ pp:
+  aliases: [pp]
+  description: PermissionPlus help
+ ppplayer:
+  aliases: [ppplyr]
+  description: Manages player permission
+ ppcommand:
+  aliases: [ppcmd]
+  description: Manages player permission
+ ppsub:
+  description: PermissionPlus preferences
+ ppconfig:
+  aliases: [ppcfg]
+  description: PermissionPlus preferences
+permissions:
