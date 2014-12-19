@@ -1,10 +1,10 @@
 name: PermissionPlus
 main: PermissionPlus\Main
-version: 1.3.1
+version: 1.3.2
 api: [1.8.0]
 load: STARTUP
-author: Hmy&Bios
-authors: [Hmy&Bios]
+author: Hmy2001&BIOS
+authors: [Hmy2001&BIOS]
 description: PermissionPlus.
 commands:
  pp:
