@@ -356,14 +356,15 @@ class Main extends PluginBase implements Listener, CommandExecutor{
         }
 
         public function SubCommand($text,$amount){
-                $sub = "";
+                $subcmd = "";
                 for($number = $amount; ; $number++){
                         if(!isset($text[$number]) or !isset($text[$number]) or $text[$number] === " "){
                                 $number = $amount;
                         break;
                         }
+                        $subcmd .= $text[$number];
                 }
-                return array($sub,$number);
+                return array($subcmd,$number);
         }
 
 /*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -405,8 +406,8 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                 $text = $event->getMessage();
                 if($text[0] === "/"){
                         $Main = $this->MainCommand($event->getMessage());
-                        $Sub = $this->SubCommand($event->getMessage(),$Main[1]+2);
-                        $this->getLogger()->info("".$Main.",".$Sub."");//DebugCode
+                        $Sub = $this->SubCommand($event->getMessage(),$Main[1]+1);
+                        $this->getLogger()->info("".$Main[0].",".$Sub[0].",".$Main[1].",".$Sub[1]."");//DebugCode
                         if(PermissionSystem::API()->get("cmd-whitelist")){
                                 $cmdCheck = CommandSystem::API()->checkPermission($username,$Main[0],$Sub[0],PermissionSystem::API()->get("notice"),$this->getLogger(),$this->alias);
                                 if(!$cmdCheck){
@@ -425,7 +426,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                 foreach(Server::getInstance()->getOnlinePlayers() as $player){
                         $username = $player->getName();
                         $Permission = PermissionSystem::API()->getUserPermission($username);
-                        if(is_null($Permissionname)){
+                        if(is_null($Permissionn)){
                                 $Permission = "ERROR";
                         }
                         $player->setNameTag("[".$Permission."] ".$username."");
@@ -435,9 +436,9 @@ class Main extends PluginBase implements Listener, CommandExecutor{
 
         public function changeNametoEveryone2(){
                 foreach(Server::getInstance()->getOnlinePlayers() as $player){
-                //$player->setNameTag("".$username."");
-                //$player->setDisplayName("".$username."");
-                
+                        $username = $player->getName();
+                        $player->setNameTag($username);
+                        $player->setDisplayName($username);
                 }
         }
 
@@ -446,7 +447,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
         public function changeName($player){
                 $username = $player->getName();
                 $Permission = PermissionSystem::API()->getUserPermission($username);
-                if(is_null($Permissionname)){
+                if(is_null($Permission)){
                         $Permission = "ERROR";
                 }
                 $player->setNameTag("[".$Permission."] ".$username."");
@@ -454,9 +455,9 @@ class Main extends PluginBase implements Listener, CommandExecutor{
         }
 
         public function changeName2($player){
-                $this->getLogger()->info($player->getName());//DebugCode
-                //$player->setNameTag("".$username."");
-                //$player->setDisplayName("".$username."");
+                $username = $player->getName();
+                $player->setNameTag($username);
+                $player->setDisplayName($username);
         }
 
 }

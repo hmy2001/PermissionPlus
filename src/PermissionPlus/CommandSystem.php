@@ -82,14 +82,212 @@ class CommandSystem{
                 return false;
         }
 
+        public function get($type){
+                return $this->Command->get($type);
+        }
 
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	Command
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
+        public function showCPermissionsList($sender){
+                $output ="";
+                $permission =array();
+                $clist = $this->Command->get('command');
+                foreach(PermissionSystem::API()->getPermissions() as $prm){
+                        $pname = substr($prm, 0, 5);
+                        foreach ($clist[$prm] as $command => $enable) {
+                                if($enable){
+                                        if(PermissionSystem::API()->get("permission")[$prm]){
+                                                $permission[$prm][$command] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]";
+                                        }else{
+                                                $space =str_repeat(" ", 6-strlen($pname)-1);
+                                                $permission[$prm][$command] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]" .$space;
+                                        }
+                                }else{
+                                        $permission[$prm][$command] ="       ";
+                                }
+                        }
+                }
+                //$line = "|";
+                foreach ($this->getCommands() as $command) {
+                        foreach (PermissionSystem::API()->getPermissions() as $prm) {
+                                //$output .= "$line".$permission[$prm][$command];
+                                $output .= $permission[$prm][$command];
+                        }
+                        $output .= " :  /".$command."\n";
+                }
+                $sender->sendMessage($output);
+        }
 
+        public function getCommands() {
+                $cmds =array_keys($this->Command->get('command')['ADMIN']);
+                return $cmds;
+        }
 
+        public function setCPermission($command,$permissions,$sender){
+                $msg ="";
+                $return = array_fill_keys(PermissionSystem::API()->getPermissions(), false);
+                if(!empty($permissions)){
+                        foreach($permissions as $permission){
+                                $value = $permission;
+                                if(!$this->castPermission($permission)){
+                                        $sender->sendMessage("[Permission+] Invalid value: \"$value\"");
+                                continue;
+                                }
+                                $permission = $this->castPermission($permission);
+                                $msg .= $permission." ";
+                                $return[$permission] = true;
+                        }
+                }else{
+                        foreach(PermissionSystem::API()->getPermissions() as $permission){
+                                $return[$permission] = false;
+                        }
+                }
+                foreach(PermissionSystem::API()->getPermissions() as $permission){
+                        $newcmd = $this->Command->get('command')[$permission];
+                        $newcmd[$command] = $return[$permission];
+                        unset($this->Command->get('command')[$permission]);
+                        $this->Command->set("command", array_merge($this->Command->get("command"), array($permission => $newcmd)));
+                        $this->Command->save();
+                }
+                if(empty($msg)){
+                        $sender->sendMessage("[Permission+] \"/".$command."\" was disabled.");
+                }else{
+                        $sender->sendMessage("[Permission+] Assigned ".$msg."to \"/".$command."\".");
+                }
+        }
 
-//死ぬぽよ
+        public function showSPermissionsList($sender) {
+                $output = "";
+                $permission = array();
+                $clist = $this->Command->get('subcmd');
+                foreach(PermissionSystem::API()->getPermissions() as $prm){
+                        $pname =substr($prm, 0, 5);
+                        foreach($clist[$prm] as $command => $subcmds){
+                                foreach($subcmds as $sub => $enable){
+                                        if($enable){
+                                                if($this->Command->get("permission")[$prm]){
+                                                        $permission[$prm][$command."_".$sub] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]";
+                                                }else{
+                                                        $space =str_repeat(" ", 6-strlen($pname)-1);
+                                                        $permission[$prm][$command."_".$sub] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]" .$space;
+                                                }
+                                        }else{
+                                                $permission[$prm][$command."_".$sub] ="       ";
+                                        }
+                                }
+                        }
+                }
+                foreach($this->Command->get("subcmd")["ADMIN"] as $command => $subcmds){
+                        foreach(array_keys($subcmds) as $sub){
+                        //$line = "|";
+                                foreach(PermissionSystem::API()->getPermissions() as $prm){
+                                        //$output .= "$line".$permission[$prm][$command."_".$sub];
+                                        $output .= $permission[$prm][$command."_".$sub];
+                                }
+                                $sender->sendMessage("".$output.":  /".$command." ".$sub."");
+                                $output ="";
+                        }
+                }
+        }
 
+        public function setSPermission($cmd, $sub, $permissions, $player) {
+                $msg ="";
+                $return = array_fill_keys(PermissionSystem::API()->getPermissions(), false);
+                if(!empty($permissions)){
+                        foreach($permissions as $permission){
+                                $value = $permission;
+                                if(!$this->castPermission($permission)) {
+                                        $player->sendMessage("[Permission+] Invalid value: \"$value\"");
+                                        continue;
+                                }
+                                $permission = $this->castPermission($permission);
+                                $msg .= $permission." ";
+                                $return[$permission] =true;
+                        }
+                }else{
+                        foreach(PermissionSystem::API()->getPermissions() as $permission){
+                                $return[$permission] = false;
+                        }
+                }
+                foreach(PermissionSystem::API()->getPermissions() as $permission){
+                        $newcmd = $this->Command->get('subcmd')[$permission];
+                        $newcmd[$cmd][$sub] = $return[$permission];
+                        unset($this->Command->get('subcmd')[$permission]);
+                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($permission => $newcmd)));
+                        $this->Command->save();
+                }
+                if(empty($msg)){
+                        $player->sendMessage("[Permission+] \"/".$cmd." ".$sub."\" was disabled.");
+                }else{
+                        $player->sendMessage("[Permission+] Assigned ".$msg."to \"/".$cmd." ".$sub."\".");
+                }
+        }
 
+        public function addPermission($permission){
+                $this->Command->set("command", array_merge($this->Command->get("command"), array($permission => array_fill_keys($this->getCommands(),false))));
+                $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($permission => array())));
+                foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
+                        $this->Command->set("subcmd")[$permission][$cmd] = array();
+                        foreach(array_keys($subcmds) as $sub){
+                                $this->Command->set("subcmd")[$permission][$cmd][$sub] = false;
+                        }
+                }
+                $this->Command->save();
+        }
+
+        public function removePermission($permission){
+                unset($this->Command->get("command")[$permission]);
+                unset($this->Command->get("subcmd")[$permission]);
+                $this->Command->save();
+        }
+
+        public function checkPermission($player,$cmd,$sub,$notice,$usage,$aliasdata){
+                $permission = PermissionSystem::API()->getUserPermission($player);
+                if($notice === true and !isset($this->Command->get('command')['ADMIN'][$cmd])){
+                        $usage->info("NOTICE: \"/".$cmd."\" permission is not setted!");
+                        $usage->info("Usage: /ppcommand ".$cmd." (g) (t) (a)");
+                }
+                if(!empty($sub)){
+                        if(isset($this->Command->get('subcmd')[$permission][$cmd][$sub]) && !$this->Command->get('subcmd')[$permission][$cmd][$sub]){
+                                return false;
+                        }
+                }
+                foreach($aliasdata as $data){
+                        if(!$data[1] and $data[0] === $cmd){
+                                return false;
+                        }
+                }
+                return true;
+        }
+
+        public function castPermission($permission){
+                $permission = strtoupper($permission);
+                switch($permission){
+                case "A":
+                case "ADMIN":
+                $permission ="ADMIN";
+                return $permission;
+                break;
+                case "T":
+                case "TRUST":
+                $permission ="TRUST";
+                return $permission;
+                break;
+                case "G":
+                case "GUEST":
+                $permission ="GUEST";
+                return $permission;
+                break;
+                default:
+                if(in_array($permission, PermissionSystem::API()->getPermissions())){
+                        return $permission;
+                }
+                return false;
+                }
+                return true;
+        }
 
 /*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	データセーブ
