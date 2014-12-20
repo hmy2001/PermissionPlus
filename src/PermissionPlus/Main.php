@@ -17,6 +17,7 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class Main extends PluginBase implements Listener, CommandExecutor{
+        private $attachments = [];
         const VERSION = $this->getDescription()->getVersion();
 
 	public function onEnable(){
@@ -37,6 +38,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                 $this->getLogger()->info("ImportError");
                         }
                 }
+                $this->alias = array();
 	}
 
 	public function onDisable(){
@@ -157,6 +159,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                 	$this->changeNametoEveryone();
                 }else{
                 	$sender->sendMessage("[Permission+] Truned off to the PerName function.");
+                	$this->changeNametoEveryone2();
                 }
                 break;
                 case "cmdwhitelist":
@@ -214,19 +217,243 @@ class Main extends PluginBase implements Listener, CommandExecutor{
 		}
         }
 
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+       他の処理
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+        public function giveOP($username) {
+                $player = $this->getServer()->getPlayerExact($username);
+                $player->sendMessage("You are now op!");
+                $player->setOp(true);
+        }
+
+        public function giveOPtoEveryone(){
+                foreach(Server::getInstance()->getOnlinePlayers() as $player){
+                        $player->sendMessage("You are now op!");
+                        $player->setOp(true);
+                }
+        }
+
+        public function isAlnum($text){
+                if(preg_match("/^[a-zA-Z0-9]+$/",$text)){
+                        return true;
+                }else {
+                        return false;
+                }
+        }
+
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	bool
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+        public function castBool($bool) {
+                $bool = strtoupper($bool);
+                switch($bool){
+                case "TRUE":
+                case "ON":
+                case "1":
+                return true;
+                break;
+                case "FALSE":
+                case "OFF":
+                case "0":
+                return false;
+                break;
+                default:
+                return false;
+                }
+        }
+
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	CommandPermission関連
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+        public function setPermission($player){
+                if(PermissionSystem::API()->get("cmd-whitelist") === true and $player->isOp()){
+                        $attachment = $this->getAttachment($player);
+                        foreach(array_keys($attachment->getPermissions()) as $old_perm){
+                        $attachment->unsetPermission($old_perm);
+                        }
+                        $this->alias = array();
+                        foreach($this->getServer()->getCommandMap()->getCommands() as $command){
+                                foreach(CommandSystem::API()->get('command')[PermissionSystem::API()->getUserPermission($player->getName())] as $new_perm => $en){
+                                        switch($new_perm){
+                                        case $command->getPermission():
+                                        if($en === true or $en === 1){
+                                                if(is_array($command->getAliases())){
+                                                        foreach($command->getAliases() as $alias){
+                                                                $this->alias[] = array($alias,true);
+                                                        }
+                                                }
+                                                if(strstr($command->getPermission(),';')){
+                                                        $this->alias[] = array($command->getName(),true);
+                                                }
+                                                $attachment->setPermission($command->getPermission(),true);
+                                        }else{
+                                                if(is_array($command->getAliases())){
+                                                        foreach($command->getAliases() as $alias){
+                                                                $this->alias[] = array($alias,false);
+                                                        }
+                                                }
+                                                if(strstr($command->getPermission(),';')){
+                                                        $this->alias[] = array($command->getName(),false);
+                                                }
+                                                $attachment->setPermission($command->getPermission(),false);
+                                        }
+                                        break;
+                                        case $command->getName():
+                                        if($en === true or $en === 1){
+                                                if(is_array($command->getAliases())){
+                                                        foreach($command->getAliases() as $alias){
+                                                                $this->alias[] = array($alias,true);
+                                                        }
+                                                }
+                                                if(strstr($command->getPermission(),';')){
+                                                        $this->alias[] = array($command->getName(),true);
+                                                }
+                                                $command->setPermission("permissionplus.command.".$command->getName()."");
+                                                $attachment->setPermission($command->getPermission(),true);
+                                        }else{
+                                                if(is_array($command->getAliases())){
+                                                        foreach($command->getAliases() as $alias){
+                                                                $this->alias[] = array($alias,false);
+                                                        }
+                                                }
+                                                if(strstr($command->getPermission(),';')){
+                                                        $this->alias[] = array($command->getName(),false);
+                                                }
+                                                $command->setPermission("permissionplus.command.".$command->getName()."");
+                                                $attachment->setPermission($command->getPermission(),false);
+                                        }
+                                        break;
+                                        }
+                                }
+                        }
+                }
+        }
+
+        public function getAttachment(Player $player){
+                if(!isset($this->attachments[$player->getName()])){
+                        $this->attachments[$player->getName()] = $player->addAttachment($this);
+                }else{
+                        $player->removeAttachment($this->attachments[$player->getName()]);
+                        $this->attachments[$player->getName()] = $player->addAttachment($this);
+                }
+                return $this->attachments[$player->getName()];
+        }
+
+        public function MainCommand($text){
+                $maincmd = "";
+                $mainend = "";
+                for($number = 1; ; $number++){
+                        if(!isset($text[$number]) or !isset($text[$number]) or $text[$number] === " "){
+                                $mainend = $number;
+                        break;
+                        }
+                        $maincmd .= $text[$number];
+                }
+                return array($maincmd,$mainend);
+        }
+
+        public function SubCommand($text,$amount){
+                $sub = "";
+                for($number = $amount; ; $number++){
+                        if(!isset($text[$number]) or !isset($text[$number]) or $text[$number] === " "){
+                                $number = $amount;
+                        break;
+                        }
+                }
+                return array($sub,$number);
+        }
+
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	Event
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+        public function onPlayerJoin(PlayerJoinEvent $event){
+                $player = $event->getPlayer();
+                $username = $player->getName();
+                if(!PermissionSystem::API()->getUserPermission($username)){
+                        PermissionSystem::API()->createAccount($username);
+                        PermissionSystem::API()->saveData();
+                }
+                if(PermissionSystem::API()->get("autoop")){
+                        if($player instanceof Player){
+                                $this->giveOP($username);
+                        }
+                }
+                if(PermissionSystem::API()->get("PerName")){
+                        if($player instanceof Player){
+                                $this->changeName($player);
+                        }
+                }
+                $this->setPermission($player);
+        }
+
+        public function onPlayerQuit(PlayerQuitEvent $event){
+                $player = $event->getPlayer();
+                if(PermissionSystem::API()->get("PerName")){
+                        if($player instanceof Player){
+                                $this->changeName2($player);
+                        }
+                }
+        }
+
+        public function onCommandEvent(PlayerCommandPreprocessEvent $event){
+                $player = $event->getPlayer();
+                $username = $player->getName();
+                $text = $event->getMessage();
+                if($text[0] === "/"){
+                        $Main = $this->MainCommand($event->getMessage());
+                        $Sub = $this->SubCommand($event->getMessage(),$Main[1]+2);
+                        $this->getLogger()->info("".$Main.",".$Sub."");//DebugCode
+                        if(PermissionSystem::API()->get("cmd-whitelist")){
+                                $cmdCheck = CommandSystem::API()->checkPermission($username,$Main[0],$Sub[0],PermissionSystem::API()->get("notice"),$this->getLogger(),$this->alias);
+                                if(!$cmdCheck){
+                                        $event->setCancelled(true);
+                                        $player->sendMessage("You don't have permissions to use this command.");
+                                }
+                        }
+                }
+        }
+
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	名前変更
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+        public function changeNametoEveryone(){
+                foreach(Server::getInstance()->getOnlinePlayers() as $player){
+                        $username = $player->getName();
+                        $Permission = PermissionSystem::API()->getUserPermission($username);
+                        if(is_null($Permissionname)){
+                                $Permission = "ERROR";
+                        }
+                        $player->setNameTag("[".$Permission."] ".$username."");
+                        $player->setDisplayName("[".$Permission."] ".$username."");
+                }
+        }
+
+        public function changeNametoEveryone2(){
+                foreach(Server::getInstance()->getOnlinePlayers() as $player){
+                
+                
+                }
+        }
 
 
 
+        public function changeName($player){
+                $username = $player->getName();
+                $Permission = PermissionSystem::API()->getUserPermission($username);
+                if(is_null($Permissionname)){
+                        $Permission = "ERROR";
+                }
+                $player->setNameTag("[".$Permission."] ".$username."");
+                $player->setDisplayName("[".$Permission."] ".$username."");
+        }
 
-
-//TODO
-
-
-
-
-
-
-
-
+        public function changeName2($player){
+                $this->getLogger()->info($player->getName());//DebugCode
+        }
 
 }
