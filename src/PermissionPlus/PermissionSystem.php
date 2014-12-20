@@ -213,7 +213,7 @@ class PermissionSystem{
                 $permission ="TRUST";
                 return $permission;
                 break;
-                case "G"
+                case "G":
                 case "GUEST":
                 $permission ="GUEST";
                 return $permission;

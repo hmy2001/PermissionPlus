@@ -109,11 +109,10 @@ class CommandSystem{
                                 }
                         }
                 }
-                //$line = "|";
+                $line = "|";
                 foreach ($this->getCommands() as $command) {
                         foreach (PermissionSystem::API()->getPermissions() as $prm) {
-                                //$output .= "$line".$permission[$prm][$command];
-                                $output .= $permission[$prm][$command];
+                                $output .= "$line".$permission[$prm][$command];
                         }
                         $output .= " :  /".$command."\n";
                 }
@@ -181,10 +180,9 @@ class CommandSystem{
                 }
                 foreach($this->Command->get("subcmd")["ADMIN"] as $command => $subcmds){
                         foreach(array_keys($subcmds) as $sub){
-                        //$line = "|";
+                        $line = "|";
                                 foreach(PermissionSystem::API()->getPermissions() as $prm){
-                                        //$output .= "$line".$permission[$prm][$command."_".$sub];
-                                        $output .= $permission[$prm][$command."_".$sub];
+                                        $output .= "$line".$permission[$prm][$command."_".$sub];
                                 }
                                 $sender->sendMessage("".$output.":  /".$command." ".$sub."");
                                 $output ="";

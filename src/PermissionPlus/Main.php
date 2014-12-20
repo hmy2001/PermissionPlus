@@ -407,7 +407,6 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                 if($text[0] === "/"){
                         $Main = $this->MainCommand($event->getMessage());
                         $Sub = $this->SubCommand($event->getMessage(),$Main[1]+1);
-                        $this->getLogger()->info("".$Main[0].",".$Sub[0].",".$Main[1].",".$Sub[1]."");//DebugCode
                         if(PermissionSystem::API()->get("cmd-whitelist")){
                                 $cmdCheck = CommandSystem::API()->checkPermission($username,$Main[0],$Sub[0],PermissionSystem::API()->get("notice"),$this->getLogger(),$this->alias);
                                 if(!$cmdCheck){
