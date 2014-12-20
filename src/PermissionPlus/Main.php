@@ -18,7 +18,7 @@ use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class Main extends PluginBase implements Listener, CommandExecutor{
         private $attachments = [];
-        const VERSION = $this->getDescription()->getVersion();
+        const VERSION = "1.3.2";
 
 	public function onEnable(){
 		$this->getLogger()->info("PermissionPlus loaded!");
@@ -435,7 +435,8 @@ class Main extends PluginBase implements Listener, CommandExecutor{
 
         public function changeNametoEveryone2(){
                 foreach(Server::getInstance()->getOnlinePlayers() as $player){
-                
+                //$player->setNameTag("".$username."");
+                //$player->setDisplayName("".$username."");
                 
                 }
         }
@@ -454,6 +455,8 @@ class Main extends PluginBase implements Listener, CommandExecutor{
 
         public function changeName2($player){
                 $this->getLogger()->info($player->getName());//DebugCode
+                //$player->setNameTag("".$username."");
+                //$player->setDisplayName("".$username."");
         }
 
 }

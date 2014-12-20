@@ -91,9 +91,12 @@ class CommandSystem{
 
 
 
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	データセーブ
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
-
-
-
+        public function saveData(){
+                $this->Command->save();
+        }
 
 }

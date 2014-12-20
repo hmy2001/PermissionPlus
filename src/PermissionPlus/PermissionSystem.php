@@ -33,7 +33,7 @@ class PermissionSystem{
         public function CreateConfig(){
                 $this->Account = new Config($this->DataFolder."Account.yml", CONFIG::YAML);
                 $this->Account->save();
-                $this->Permission = new Config($dataFolder."Permission.yml", CONFIG::YAML, array("notice" => true, "autoop" => false, "PerName" => false, "cmd-whitelist" => true, "permission" => array( "GUEST" => true, "TRUST" => true, "ADMIN" => true)));
+                $this->Permission = new Config($this->DataFolder."Permission.yml", CONFIG::YAML, array("notice" => true, "autoop" => false, "PerName" => false, "cmd-whitelist" => true, "permission" => array( "GUEST" => true, "TRUST" => true, "ADMIN" => true)));
                 $this->Permission->save();
                 return true;
         }
@@ -67,5 +67,44 @@ class PermissionSystem{
 
 
 
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	アカウント
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+        public function createAccount($username){
+                if($this->Account->exists($username)){
+                        return false;
+                }else{
+                        $this->Account->set($username, array("Permission" => "GUEST"));
+                        return true;
+                }
+        }
+
+        public function getUserPermission($username){
+                if($this->Account->exists($username)){
+                        return $this->Account->get($username)["Permission"];
+                }else{
+                        return false;
+                }
+        }
+
+
+
+
+
+
+
+
+
+
+
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	データセーブ
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+
+        public function saveData(){
+                $this->Account->save();
+                $this->Permission->save();
+        }
 
 }
