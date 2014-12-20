@@ -3,6 +3,7 @@
 namespace PermissionPlus;
 
 use pocketmine\Server;
+use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 
