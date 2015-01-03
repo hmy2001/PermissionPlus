@@ -37,8 +37,8 @@ class CommandSystem{
         }
 
         public function FormatConfig(){
-                if(file_exists($this->getDataFolder(). "config.yml")){
-                        $config = new Config($dataFolder."config.yml", CONFIG::YAML);
+                if(file_exists($this->DataFolder. "config.yml")){
+                        $config = new Config($this->DataFolder."config.yml", CONFIG::YAML);
                         if($config->get("version")){
                                 $version = $config->get("version");
                                 if(Main::VERSION > $version){
@@ -76,20 +76,61 @@ class CommandSystem{
                                                 $this->Command->set("command", array_merge($this->Command->get("command"), array($per => $newcmd)));
                                         }
                                         $this->Command->save();
+                                        @unlink($this->getDataFolder()."config.yml");
                                         return true;
                                 }
                                 return false;
                         }
                         return false;
-                }elseif(file_exists($this->getDataFolder(). "groups.yml")){
-                        $config = new Config($dataFolder."groups.yml", CONFIG::YAML);
-
-
-
-
-
-
-
+                }elseif(file_exists($this->DataFolder. "groups.yml")){
+                        $config = new Config($this->DataFolder."groups.yml", CONFIG::YAML);
+                        $config = $config->getAll();
+                        /*foreach($config as $per => $perdata){
+                                if(!isset($this->Command->get("subcmd")[$per])){
+                                        $newcmd = array();
+                                        foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
+                                                $newcmd[$cmd] = array();
+                                                foreach(array_keys($subcmds) as $sub){
+                                                        $newcmd[$cmd][$sub] = false;
+                                                }
+                                        }
+                                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($per => $newcmd)));
+                                        unset($newcmd);
+                                }
+                                foreach($perdata["worlds"] as $worldname => $permissions){
+                                        if(!isset($this->Command->get("command")[$per])){
+                                                $this->Command->set("command", array_merge($this->Command->get("command"), array($per => array_fill_keys($this->getCommands(),false))));
+                                        }
+                                        $newcmd = $this->Command->get('command')[$per];
+                                        foreach($permissions as $perm => $pers){
+                                                foreach($pers as $pe){
+                                                        if(substr($pe, 0, 1) === "-"){
+                                                                foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
+                                                                        if($command->getPermission() === $pe){
+                                                                                $newcmd[$command->getName()] = false;
+                                                                        }else{
+                                                                                $newcmd[$command->getPermission()] = false;
+                                                                        }
+                                                                }
+                                                        }else{
+                                                                foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
+                                                                        if($command->getPermission() === $pe){
+                                                                                $newcmd[$command->getName()] = true;
+                                                                        }else{
+                                                                                $newcmd[$command->getPermission()] = true;
+                                                                        }
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                        unset($this->Command->get('command')[$per]);
+                                        $this->Command->set("command", array_merge($this->Command->get("command"), array($per => $newcmd)));
+                                }
+                                $this->Command->save();
+                                //@unlink($this->getDataFolder()."groups.yml");
+                                //return true;
+                        }*/
+                        return false;
                 }else{
                         return false;
                 }

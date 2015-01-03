@@ -33,7 +33,6 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                         $cmd = CommandSystem::API()->FormatConfig();
                         if($per and $cmd){
                         	$this->getLogger()->info("ImportCompletion");
-                                @unlink($this->getDataFolder()."config.yml");
                         }else{
                                 $this->getLogger()->info("ImportError");
                         }
@@ -196,6 +195,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                 }
                 if(PermissionSystem::API()->removePermission($name)){
                 	$sender->sendMessage("[Permission+] Successful!");
+                        PermissionSystem::API()->ResetPermission($name);
                 }else{
                 	$sender->sendMessage("[Permission+] Failed to remove!");
                 }

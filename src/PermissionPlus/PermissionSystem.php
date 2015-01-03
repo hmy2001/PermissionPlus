@@ -40,8 +40,8 @@ class PermissionSystem{
         }
 
         public function FormatConfig(){
-                if(file_exists($this->getDataFolder(). "config.yml")){
-                        $config = new Config($dataFolder."config.yml", CONFIG::YAML);
+                if(file_exists($this->DataFolder. "config.yml")){
+                        $config = new Config($this->DataFolder."config.yml", CONFIG::YAML);
                         if($config->get("version")){
                                 $version = $config->get("version");
                                 if(Main::VERSION > $version){
@@ -62,15 +62,19 @@ class PermissionSystem{
                                 return false;
                         }
                         return false;
-                }elseif(file_exists($this->getDataFolder(). "groups.yml")){
-                        $config = new Config($dataFolder."groups.yml", CONFIG::YAML);
+                }elseif(file_exists($this->DataFolder. "groups.yml")){
+                        $config = new Config($this->DataFolder."groups.yml", CONFIG::YAML);
                         $config = $config->getAll();
+                        /*foreach($config as $pername => $perdata){
+                                //if($pername){
 
 
 
-
-
-
+                                }
+                                $this->Permission->set("permission", array_merge($this->Permission->get("permission"), array($pername => true)));
+                        }*/
+                        $this->Permission->save();
+                        return true;
                 }else{
                         return false;
                 }
@@ -99,6 +103,16 @@ class PermissionSystem{
                 }else{
                         return false;
                 }
+        }
+
+        public function getUserAccount($permission){
+                $perlist = [];
+                foreach($this->Account->getAll() as $username => $per){
+                        if($permission === $per[0]){
+                                $perlist .= $username;
+                        }
+                }
+                return $perlist;
         }
 
 /*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -212,6 +226,14 @@ class PermissionSystem{
                         return true;
                 }
                 return false;
+        }
+
+        public function ResetPermission($name){
+                $list = PermissionSystem::API()->getUserAccount($permission);
+                foreach($list as $username){
+                        $this->Account->set($username, array("Permission" => "GUEST"));
+                }
+                $this->Account->save();
         }
 
         public function castPermission($permission) {
