@@ -40,27 +40,40 @@ class PermissionSystem{
         }
 
         public function FormatConfig(){
-                $config = new Config($dataFolder."config.yml", CONFIG::YAML);
-                if($config->get("version")){
-                        $version = $config->get("version");
-                        if(Main::VERSION > $version){
-                                $config = $config->getAll();
-                                $this->Permission->set("notice", $config["notice"]);
-                                $this->Permission->set("autoop", $config["autoop"]);
-                                $this->Permission->set("cmd-whitelist", $config["cmd-whitelist"]);
-                                foreach($config["permission"] as $per => $en){
-                                        $this->Permission->set("permission", array_merge($this->Permission->get("permission"), array($per => $en)));
+                if(file_exists($this->getDataFolder(). "config.yml")){
+                        $config = new Config($dataFolder."config.yml", CONFIG::YAML);
+                        if($config->get("version")){
+                                $version = $config->get("version");
+                                if(Main::VERSION > $version){
+                                        $config = $config->getAll();
+                                        $this->Permission->set("notice", $config["notice"]);
+                                        $this->Permission->set("autoop", $config["autoop"]);
+                                        $this->Permission->set("cmd-whitelist", $config["cmd-whitelist"]);
+                                        foreach($config["permission"] as $per => $en){
+                                                $this->Permission->set("permission", array_merge($this->Permission->get("permission"), array($per => $en)));
+                                        }
+                                        foreach($config["player"] as $player => $per){
+                                                $this->Account->set($player, array("Permission" => $per));
+                                        }
+                                        $this->Account->save();
+                                        $this->Permission->save();
+                                        return true;
                                 }
-                                foreach($config["player"] as $player => $per){
-                                        $this->Account->set($player, array("Permission" => $per));
-                                }
-                                $this->Account->save();
-                                $this->Permission->save();
-                                return true;
+                                return false;
                         }
                         return false;
+                }elseif(file_exists($this->getDataFolder(). "groups.yml")){
+                        $config = new Config($dataFolder."groups.yml", CONFIG::YAML);
+                        $config = $config->getAll();
+
+
+
+
+
+
+                }else{
+                        return false;
                 }
-                return false;
         }
 
         public function get($type){

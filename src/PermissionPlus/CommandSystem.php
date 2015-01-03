@@ -37,49 +37,62 @@ class CommandSystem{
         }
 
         public function FormatConfig(){
-                $config = new Config($this->DataFolder."config.yml", CONFIG::YAML);
-                if($config->get("version")){
-                        $version = $config->get("version");
-                        if(Main::VERSION > $version){
-                                $config = $config->getAll();
-                                foreach($config["subcmd"] as $per => $data){
-                                        if(!isset($this->Command->get("subcmd")[$per])){
-                                                $newcmd = array();
-                                                foreach ($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
-                                                        $newcmd[$cmd] = array();
-                                                        foreach (array_keys($subcmds) as $sub){
-                                                                $newcmd[$cmd][$sub] = false;
+                if(file_exists($this->getDataFolder(). "config.yml")){
+                        $config = new Config($dataFolder."config.yml", CONFIG::YAML);
+                        if($config->get("version")){
+                                $version = $config->get("version");
+                                if(Main::VERSION > $version){
+                                        $config = $config->getAll();
+                                        foreach($config["subcmd"] as $per => $data){
+                                                if(!isset($this->Command->get("subcmd")[$per])){
+                                                        $newcmd = array();
+                                                        foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
+                                                                $newcmd[$cmd] = array();
+                                                                foreach(array_keys($subcmds) as $sub){
+                                                                        $newcmd[$cmd][$sub] = false;
+                                                                }
+                                                        }
+                                                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($per => $newcmd)));
+                                                        unset($newcmd);
+                                                }
+                                                $newcmd = $this->Command->get('subcmd')[$per];
+                                                foreach($data as $cmd => $subcmds){
+                                                        foreach($subcmds as $sub => $en){
+                                                                $newcmd[$cmd][$sub] = $en;
                                                         }
                                                 }
+                                                unset($this->Command->get('subcmd')[$per]);
                                                 $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($per => $newcmd)));
-                                                unset($newcmd);
                                         }
-                                        $newcmd = $this->Command->get('subcmd')[$per];
-                                        foreach($data as $cmd => $subcmds){
-                                                foreach($subcmds as $sub => $en){
-                                                        $newcmd[$cmd][$sub] = $en;
+                                        foreach($config["command"] as $per => $data){
+                                                if(!isset($this->Command->get("command")[$per])){
+                                                        $this->Command->set("command", array_merge($this->Command->get("command"), array($per => array_fill_keys($this->getCommands(),false))));
                                                 }
+                                                $newcmd = $this->Command->get('command')[$per];
+                                                foreach($data as $cmd => $en){
+                                                        $newcmd[$cmd]= $en;
+                                                }
+                                                unset($this->Command->get('command')[$per]);
+                                                $this->Command->set("command", array_merge($this->Command->get("command"), array($per => $newcmd)));
                                         }
-                                        unset($this->Command->get('subcmd')[$per]);
-                                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($per => $newcmd)));
+                                        $this->Command->save();
+                                        return true;
                                 }
-                                foreach($config["command"] as $per => $data){
-                                        if(!isset($this->Command->get("command")[$per])){
-                                                $this->Command->set("command", array_merge($this->Command->get("command"), array($per => array_fill_keys($this->getCommands(),false))));
-                                        }
-                                        $newcmd = $this->Command->get('command')[$per];
-                                        foreach($data as $cmd => $en){
-                                                $newcmd[$cmd]= $en;
-                                        }
-                                        unset($this->Command->get('command')[$per]);
-                                        $this->Command->set("command", array_merge($this->Command->get("command"), array($per => $newcmd)));
-                                }
-                                $this->Command->save();
-                                return true;
+                                return false;
                         }
                         return false;
+                }elseif(file_exists($this->getDataFolder(). "groups.yml")){
+                        $config = new Config($dataFolder."groups.yml", CONFIG::YAML);
+
+
+
+
+
+
+
+                }else{
+                        return false;
                 }
-                return false;
         }
 
         public function get($type){

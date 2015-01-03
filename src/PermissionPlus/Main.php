@@ -28,7 +28,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
 		CommandSystem::init();
                 PermissionSystem::API()->CreateConfig();
                 CommandSystem::API()->CreateConfig();
-                if(file_exists($this->getDataFolder(). "config.yml")){
+                if(file_exists($this->getDataFolder(). "config.yml") or file_exists($this->getDataFolder(). "groups.yml")){
                 	$per = PermissionSystem::API()->FormatConfig();
                         $cmd = CommandSystem::API()->FormatConfig();
                         if($per and $cmd){
@@ -38,7 +38,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                 $this->getLogger()->info("ImportError");
                         }
                 }
-                $this->alias = array();
+                $this->alias = [];
 	}
 
 	public function onDisable(){
@@ -110,9 +110,6 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                 }
                 CommandSystem::API()->setSPermission($cmd, $subcmd, $args, $sender);
                 CommandSystem::API()->saveData();
-                foreach(Server::getInstance()->getOnlinePlayers() as $player){
-                	$this->setPermission($player);
-                }
                 break;
                 case "ppconfig":
 		$config = array_shift($args);
@@ -237,7 +234,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
         public function isAlnum($text){
                 if(preg_match("/^[a-zA-Z0-9]+$/",$text)){
                         return true;
-                }else {
+                }else{
                         return false;
                 }
         }
@@ -432,8 +429,6 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                         $player->setDisplayName($username);
                 }
         }
-
-
 
         public function changeName($player){
                 $username = $player->getName();
