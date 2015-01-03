@@ -65,14 +65,19 @@ class PermissionSystem{
                 }elseif(file_exists($this->DataFolder. "groups.yml")){
                         $config = new Config($this->DataFolder."groups.yml", CONFIG::YAML);
                         $config = $config->getAll();
-                        /*foreach($config as $pername => $perdata){
-                                //if($pername){
-
-
-
-                                }
+                        foreach($config as $pername => $perdata){
+                                switch($pername){
+                                case "Default":
+                                $this->Permission->set("permission", array_merge($this->Permission->get("permission"), array("GUEST" => true)));
+                                break;
+                                case "Admin":
+                                $this->Permission->set("permission", array_merge($this->Permission->get("permission"), array("ADMIN" => true)));
+                                break;
+                                default:
                                 $this->Permission->set("permission", array_merge($this->Permission->get("permission"), array($pername => true)));
-                        }*/
+                                break;
+                                }
+                        }
                         $this->Permission->save();
                         return true;
                 }else{
