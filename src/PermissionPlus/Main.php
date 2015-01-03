@@ -279,7 +279,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                 foreach(CommandSystem::API()->get('command')[PermissionSystem::API()->getUserPermission($player->getName())] as $new_perm => $en){
                                         switch($new_perm){
                                         case $command->getPermission():
-                                        if($en === true or $en === 1){
+                                        if($en){
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[] = array($alias,true);
                                                 }
@@ -298,11 +298,9 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                         }
                                         break;
                                         case $command->getName():
-                                        if($en === true or $en === 1){
-                                                if(is_array($command->getAliases())){
-                                                        foreach($command->getAliases() as $alias){
-                                                                $this->alias[] = array($alias,true);
-                                                        }
+                                        if($en){
+                                                foreach($command->getAliases() as $alias){
+                                                        $this->alias[] = array($alias,true);
                                                 }
                                                 if(strstr($command->getPermission(),';')){
                                                         $this->alias[] = array($command->getName(),true);
@@ -310,10 +308,8 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                                 $command->setPermission("permissionplus.command.".$command->getName()."");
                                                 $attachment->setPermission($command->getPermission(),true);
                                         }else{
-                                                if(is_array($command->getAliases())){
-                                                        foreach($command->getAliases() as $alias){
-                                                                $this->alias[] = array($alias,false);
-                                                        }
+                                                foreach($command->getAliases() as $alias){
+                                                        $this->alias[] = array($alias,false);
                                                 }
                                                 if(strstr($command->getPermission(),';')){
                                                         $this->alias[] = array($command->getName(),false);
@@ -401,8 +397,8 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                 $username = $player->getName();
                 $text = $event->getMessage();
                 if($text[0] === "/"){
-                        $Main = $this->MainCommand($event->getMessage());
-                        $Sub = $this->SubCommand($event->getMessage(),$Main[1]+1);
+                        $Main = $this->MainCommand($text);
+                        $Sub = $this->SubCommand($text,$Main[1]+1);
                         if(PermissionSystem::API()->get("cmd-whitelist")){
                                 $cmdCheck = CommandSystem::API()->checkPermission($username,$Main[0],$Sub[0],PermissionSystem::API()->get("notice"),$this->getLogger(),$this->alias);
                                 if(!$cmdCheck){

@@ -243,7 +243,7 @@ class CommandSystem{
 
         public function checkPermission($player,$cmd,$sub,$notice,$usage,$aliasdata){
                 $permission = PermissionSystem::API()->getUserPermission($player);
-                if($notice === true and !isset($this->Command->get('command')['ADMIN'][$cmd])){
+                if($notice and !isset($this->Command->get('command')['ADMIN'][$cmd])){
                         $usage->info("NOTICE: \"/".$cmd."\" permission is not setted!");
                         $usage->info("Usage: /ppcommand ".$cmd." (g) (t) (a)");
                 }
