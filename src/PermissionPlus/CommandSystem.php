@@ -37,189 +37,46 @@ class CommandSystem{
         }
 
         public function FormatConfig(){
-                if(file_exists($this->DataFolder. "config.yml")){
-                        $config = new Config($this->DataFolder."config.yml", CONFIG::YAML);
-                        if($config->get("version")){
-                                $version = $config->get("version");
-                                if(Main::VERSION > $version){
-                                        $config = $config->getAll();
-                                        foreach($config["subcmd"] as $per => $data){
-                                                if(!isset($this->Command->get("subcmd")[$per])){
-                                                        $newcmd = array();
-                                                        foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
-                                                                $newcmd[$cmd] = array();
-                                                                foreach(array_keys($subcmds) as $sub){
-                                                                        $newcmd[$cmd][$sub] = false;
-                                                                }
-                                                        }
-                                                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($per => $newcmd)));
-                                                        unset($newcmd);
-                                                }
-                                                $newcmd = $this->Command->get('subcmd')[$per];
-                                                foreach($data as $cmd => $subcmds){
-                                                        foreach($subcmds as $sub => $en){
-                                                                $newcmd[$cmd][$sub] = $en;
+                $config = new Config($this->DataFolder."config.yml", CONFIG::YAML);
+                if($config->get("version")){
+                        $version = $config->get("version");
+                        if(Main::VERSION > $version){
+                                $config = $config->getAll();
+                                foreach($config["subcmd"] as $per => $data){
+                                        if(!isset($this->Command->get("subcmd")[$per])){
+                                                $newcmd = array();
+                                                foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
+                                                        $newcmd[$cmd] = array();
+                                                        foreach(array_keys($subcmds) as $sub){
+                                                                $newcmd[$cmd][$sub] = false;
                                                         }
                                                 }
-                                                unset($this->Command->get('subcmd')[$per]);
                                                 $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($per => $newcmd)));
+                                                unset($newcmd);
                                         }
-                                        foreach($config["command"] as $per => $data){
-                                                if(!isset($this->Command->get("command")[$per])){
-                                                        $this->Command->set("command", array_merge($this->Command->get("command"), array($per => array_fill_keys($this->getCommands(),false))));
-                                                }
-                                                $newcmd = $this->Command->get('command')[$per];
-                                                foreach($data as $cmd => $en){
-                                                        $newcmd[$cmd]= $en;
-                                                }
-                                                unset($this->Command->get('command')[$per]);
-                                                $this->Command->set("command", array_merge($this->Command->get("command"), array($per => $newcmd)));
-                                        }
-                                        $this->Command->save();
-                                        @unlink($this->getDataFolder()."config.yml");
-                                        return true;
-                                }
-                                return false;
-                        }
-                        return false;
-                }elseif(file_exists($this->DataFolder. "groups.yml")){
-                        $config = new Config($this->DataFolder."groups.yml", CONFIG::YAML);
-                        $config = $config->getAll();
-                        foreach($config as $per => $perdata){
-                                switch($per){
-                                case "Default":
-                                if(!isset($this->Command->get("subcmd")["GUEST"])){
-                                        $newcmd = array();
-                                        foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
-                                                $newcmd[$cmd] = array();
-                                                foreach(array_keys($subcmds) as $sub){
-                                                        $newcmd[$cmd][$sub] = false;
+                                        $newcmd = $this->Command->get('subcmd')[$per];
+                                        foreach($data as $cmd => $subcmds){
+                                                foreach($subcmds as $sub => $en){
+                                                        $newcmd[$cmd][$sub] = $en;
                                                 }
                                         }
-                                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array("GUEST" => $newcmd)));
-                                        unset($newcmd);
-                                }
-                                if(!isset($this->Command->get("command")["GUEST"])){
-                                        $this->Command->set("command", array_merge($this->Command->get("command"), array("GUEST" => array_fill_keys($this->getCommands(),false))));
-                                }
-                                $newcmd = $this->Command->get('command')["GUEST"];
-                                $perlist = [];
-                                $noperlist = [];
-                                foreach($perdata["worlds"] as $worldname => $worldper){
-                                        foreach($worldper as $permissions => $permission){
-                                                foreach($permission as $permi){
-                                                        if(substr($permi, 0, 1) === "-"){
-                                                                $permi = substr($permi, 1);
-                                                                foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
-                                                                        if($command->getPermission() === $permi){
-                                                                                $perlist[] = $permi;
-                                                                                $newcmd[$command->getName()] = false;
-                                                                        }else{
-                                                                                if(!isset($perlist[$permi])){
-                                                                                        $noperlist[] = [$permi,false];
-                                                                                }
-                                                                        }
-                                                                }
-                                                        }else{
-                                                                foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
-                                                                        if($command->getPermission() === $permi){
-                                                                                $perlist[] = $permi;
-                                                                                $newcmd[$command->getName()] = true;
-                                                                        }else{
-                                                                                if(!isset($perlist[$permi])){
-                                                                                        $noperlist[] = [$permi,true];
-                                                                                }
-                                                                        }
-                                                                }
-                                                        }
-                                                        foreach($noperlist as $noper){
-                                                                $newcmd[$noper[0]] = $noper[1];
-                                                        }
-                                                }
-                                        }
-                                }
-                                unset($this->Command->get('command')[$per]);
-                                $this->Command->set("command", array_merge($this->Command->get("command"), array("GUEST" => $newcmd)));
-                                break;
-                                case "Admin":
-                                if(!isset($this->Command->get("subcmd")["ADMIN"])){
-                                        $newcmd = array();
-                                        foreach($this->Command->get("subcmd")["TRUST"] as $cmd => $subcmds){
-                                                $newcmd[$cmd] = array();
-                                                foreach(array_keys($subcmds) as $sub){
-                                                        $newcmd[$cmd][$sub] = false;
-                                                }
-                                        }
-                                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array("ADMIN" => $newcmd)));
-                                        unset($newcmd);
-                                }
-                                if(!isset($this->Command->get("command")["ADMIN"])){
-                                        $this->Command->set("command", array_merge($this->Command->get("command"), array("ADMIN" => array_fill_keys($this->getCommands(),false))));
-                                }
-                                $newcmd = $this->Command->get('command')["ADMIN"];
-                                foreach($perdata["worlds"] as $worldname => $worldper){
-                                        foreach($worldper as $permissions => $permission){
-                                                foreach($permission as $permi){
-                                                        if(substr($permi, 0, 1) === "-"){
-
-                                                        }else{
-
-                                                        }
-                                                }
-                                        }
-                                }
-                                unset($this->Command->get('command')[$per]);
-                                $this->Command->set("command", array_merge($this->Command->get("command"), array("ADMIN" => $newcmd)));
-                                break;
-                                default:
-                                if(!isset($this->Command->get("subcmd")[$per])){
-                                        $newcmd = array();
-                                        foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
-                                                $newcmd[$cmd] = array();
-                                                foreach(array_keys($subcmds) as $sub){
-                                                        $newcmd[$cmd][$sub] = false;
-                                                }
-                                        }
+                                        unset($this->Command->get('subcmd')[$per]);
                                         $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array($per => $newcmd)));
-                                        unset($newcmd);
-                                }
-                                if(!isset($this->Command->get("command")[$per])){
-                                        $this->Command->set("command", array_merge($this->Command->get("command"), array($per => array_fill_keys($this->getCommands(),false))));
-                                }
-                                $newcmd = $this->Command->get('command')[$per];
-                                foreach($perdata["worlds"] as $worldname => $worldper){
+                                        }
+                                foreach($config["command"] as $per => $data){
                                         if(!isset($this->Command->get("command")[$per])){
                                                 $this->Command->set("command", array_merge($this->Command->get("command"), array($per => array_fill_keys($this->getCommands(),false))));
                                         }
-                                        foreach($worldper as $permissions => $permission){
-                                                foreach($permission as $permi){
-                                                        if(substr($permi, 0, 1) === "-"){
-                                                               // foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
-                                                              //          if($command->getPermission() === $he = substr($permi, 3)){
-                                                               //                 $newcmd[$command->getName()] = false;
-                                                               //         }else{
-                                                             //                  $newcmd[$he] = false;
-                                                            //            }
-                                                             //   }
-                                                        }else{
-                                                            //    foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
-                                                             //           if($command->getPermission() === $permi){
-                                                           //                     $newcmd[$command->getName()] = true;
-                                                            //            }else{
-                                                           //                    $newcmd[$permi] = true;
-                                                              //          }
-                                                              //  }
-                                                        }
-                                                }
+                                        $newcmd = $this->Command->get('command')[$per];
+                                        foreach($data as $cmd => $en){
+                                                $newcmd[$cmd]= $en;
                                         }
-                                }
-                                unset($this->Command->get('command')[$per]);
-                                $this->Command->set("command", array_merge($this->Command->get("command"), array($per => $newcmd)));
-                                break;
+                                        unset($this->Command->get('command')[$per]);
+                                        $this->Command->set("command", array_merge($this->Command->get("command"), array($per => $newcmd)));
                                 }
                                 $this->Command->save();
-                                //@unlink($this->getDataFolder()."groups.yml");
-                                //return true;
+                                @unlink($this->getDataFolder()."config.yml");
+                                return true;
                         }
                         return false;
                 }else{
