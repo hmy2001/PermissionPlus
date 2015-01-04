@@ -28,7 +28,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
 		CommandSystem::init();
                 PermissionSystem::API()->CreateConfig();
                 CommandSystem::API()->CreateConfig();
-                if(file_exists($this->getDataFolder(). "config.yml") or file_exists($this->getDataFolder(). "groups.yml")){
+                if(file_exists($this->getDataFolder(). "config.yml")){
                 	$per = PermissionSystem::API()->FormatConfig();
                         $cmd = CommandSystem::API()->FormatConfig();
                         if($per and $cmd){
