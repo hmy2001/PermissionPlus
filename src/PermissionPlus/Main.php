@@ -196,6 +196,10 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                 if(PermissionSystem::API()->removePermission($name)){
                 	$sender->sendMessage("[Permission+] Successful!");
                         PermissionSystem::API()->ResetPermission($name);
+                        foreach(Server::getInstance()->getOnlinePlayers() as $player){
+                                $this->changeName($player);
+                		$this->setPermission($player);
+                        }
                 }else{
                 	$sender->sendMessage("[Permission+] Failed to remove!");
                 }

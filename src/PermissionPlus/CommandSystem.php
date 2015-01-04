@@ -238,8 +238,12 @@ class CommandSystem{
         }
 
         public function removePermission($permission){
-                unset($this->Command->get("command")[$permission]);
-                unset($this->Command->get("subcmd")[$permission]);
+                $cper = $this->Command->get("command");
+                $sper = $this->Command->get("subcmd");
+                unset($cper[$permission]);
+                unset($sper[$permission]);
+                $this->Command->set("command",$cper);
+                $this->Command->set("subcmd",$sper);
                 $this->Command->save();
         }
 

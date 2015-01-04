@@ -92,8 +92,8 @@ class PermissionSystem{
         public function getUserAccount($permission){
                 $perlist = [];
                 foreach($this->Account->getAll() as $username => $per){
-                        if($permission === $per[0]){
-                                $perlist .= $username;
+                        if($permission === $per["Permission"]){
+                                $perlist[] = $username;
                         }
                 }
                 return $perlist;
@@ -204,7 +204,9 @@ class PermissionSystem{
         public function removePermission($permission){
                 $permission = strtoupper($permission);
                 if(isset($this->Permission->get("permission")[$permission]) && !$this->Permission->get("permission")[$permission]){
-                        unset($this->Permission->get("permission")[$permission]);
+                        $permissions = $this->Permission->get("permission");
+                        unset($permissions[$permission]);
+                        $this->Permission->set("permission",$permissions);
                         CommandSystem::API()->removePermission($permission);
                         $this->Permission->save();
                         return true;
@@ -212,7 +214,7 @@ class PermissionSystem{
                 return false;
         }
 
-        public function ResetPermission($name){
+        public function ResetPermission($permission){
                 $list = PermissionSystem::API()->getUserAccount($permission);
                 foreach($list as $username){
                         $this->Account->set($username, array("Permission" => "GUEST"));
