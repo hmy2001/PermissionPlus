@@ -88,26 +88,52 @@ class CommandSystem{
                         foreach($config as $per => $perdata){
                                 switch($per){
                                 case "Default":
+                                if(!isset($this->Command->get("subcmd")["GUEST"])){
+                                        $newcmd = array();
+                                        foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
+                                                $newcmd[$cmd] = array();
+                                                foreach(array_keys($subcmds) as $sub){
+                                                        $newcmd[$cmd][$sub] = false;
+                                                }
+                                        }
+                                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array("GUEST" => $newcmd)));
+                                        unset($newcmd);
+                                }
+                                if(!isset($this->Command->get("command")["GUEST"])){
+                                        $this->Command->set("command", array_merge($this->Command->get("command"), array("GUEST" => array_fill_keys($this->getCommands(),false))));
+                                }
                                 $newcmd = $this->Command->get('command')["GUEST"];
+                                $perlist = [];
+                                $noperlist = [];
                                 foreach($perdata["worlds"] as $worldname => $worldper){
                                         foreach($worldper as $permissions => $permission){
                                                 foreach($permission as $permi){
                                                         if(substr($permi, 0, 1) === "-"){
-                                                                //foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
-                                                               ///         if($command->getPermission() === substr($permi, 3)){
-                                                               //                 $newcmd[$command->getName()] = false;
-                                                               //         }else{
-                                                               //                 $newcmd[$command->getPermission()] = false;
-                                                               //         }
-                                                                //}
+                                                                $permi = substr($permi, 1);
+                                                                foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
+                                                                        if($command->getPermission() === $permi){
+                                                                                $perlist[] = $permi;
+                                                                                $newcmd[$command->getName()] = false;
+                                                                        }else{
+                                                                                if(!isset($perlist[$permi])){
+                                                                                        $noperlist[] = [$permi,false];
+                                                                                }
+                                                                        }
+                                                                }
                                                         }else{
-                                                               // foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
-                                                               //         if($command->getPermission() === $permi){
-                                                               //                 $newcmd[$command->getName()] = true;
-                                                                //        }else{
-                                                              //                  $newcmd[$command->getPermission()] = true;
-                                                               //         }
-                                                              //  }
+                                                                foreach(Server::getInstance()->getCommandMap()->getCommands() as $command){
+                                                                        if($command->getPermission() === $permi){
+                                                                                $perlist[] = $permi;
+                                                                                $newcmd[$command->getName()] = true;
+                                                                        }else{
+                                                                                if(!isset($perlist[$permi])){
+                                                                                        $noperlist[] = [$permi,true];
+                                                                                }
+                                                                        }
+                                                                }
+                                                        }
+                                                        foreach($noperlist as $noper){
+                                                                $newcmd[$noper[0]] = $noper[1];
                                                         }
                                                 }
                                         }
@@ -116,6 +142,20 @@ class CommandSystem{
                                 $this->Command->set("command", array_merge($this->Command->get("command"), array("GUEST" => $newcmd)));
                                 break;
                                 case "Admin":
+                                if(!isset($this->Command->get("subcmd")["ADMIN"])){
+                                        $newcmd = array();
+                                        foreach($this->Command->get("subcmd")["TRUST"] as $cmd => $subcmds){
+                                                $newcmd[$cmd] = array();
+                                                foreach(array_keys($subcmds) as $sub){
+                                                        $newcmd[$cmd][$sub] = false;
+                                                }
+                                        }
+                                        $this->Command->set("subcmd", array_merge($this->Command->get("subcmd"), array("ADMIN" => $newcmd)));
+                                        unset($newcmd);
+                                }
+                                if(!isset($this->Command->get("command")["ADMIN"])){
+                                        $this->Command->set("command", array_merge($this->Command->get("command"), array("ADMIN" => array_fill_keys($this->getCommands(),false))));
+                                }
                                 $newcmd = $this->Command->get('command')["ADMIN"];
                                 foreach($perdata["worlds"] as $worldname => $worldper){
                                         foreach($worldper as $permissions => $permission){
