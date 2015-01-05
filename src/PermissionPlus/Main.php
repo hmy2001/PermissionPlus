@@ -270,37 +270,83 @@ class Main extends PluginBase implements Listener, CommandExecutor{
 	CommandPermission関連
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
+        public function getPermission($permission){
+                foreach($this->getServer()->getCommandMap()->getCommands() as $command){
+                        if($command->getPermission() === $permission){
+                                return $command;
+                        }
+                }
+        }
+
         public function setPermission($player){
                 if(PermissionSystem::API()->get("cmd-whitelist") and $player->isOp()){
                         $attachment = $this->getAttachment($player);
                         foreach(array_keys($attachment->getPermissions()) as $old_perm){
-                        $attachment->unsetPermission($old_perm);
+                                $attachment->unsetPermission($old_perm);
                         }
-                        foreach($this->getServer()->getCommandMap()->getCommands() as $command){
-                                foreach(CommandSystem::API()->get('command')[$per = PermissionSystem::API()->getUserPermission($player->getName())] as $new_perm => $en){
-                                        $this->alias[$per] = [];
-                                        if(isset($this->aliasPermission[$per])){
-                                                $old_aliasPermission[$per] = $this->aliasPermission[$per];
-                                                $this->aliasPermission[$per] = [];
+                        foreach(CommandSystem::API()->get('command')[$per = PermissionSystem::API()->getUserPermission($player->getName())] as $new_perm => $en){
+                                $this->alias[$per] = [];
+                                $command = $this->getServer()->getCommandMap()->getCommand($new_perm);
+                                if($command instanceof Command){
+                                        if($en){
+                                                foreach($command->getAliases() as $alias){
+                                                        $this->alias[$per][] = [$alias,true];
+                                                }
+
+
+
+
+                                        }else{
+                                                foreach($command->getAliases() as $alias){
+                                                        $this->alias[$per][] = [$alias,false];
+                                                }
                                         }
+                                }else{
+                                        $command = $this->getPermission($new_perm);
+                                        if($en){
+                                                foreach($command->getAliases() as $alias){
+                                                        $this->alias[$per][] = [$alias,true];
+                                                }
+
+
+
+
+                                        }else{
+                                                foreach($command->getAliases() as $alias){
+                                                        $this->alias[$per][] = [$alias,false];
+                                                }
+
+
+
+                                        }
+                                }
+                        }
+
+
+
+
+
+
+
+
+/*
+                        foreach($this->getServer()->getCommandMap()->getCommands() as $command){
+
+
                                         switch($new_perm){
                                         case $command->getPermission():
                                         if($en){
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][] = array($alias,true);
                                                 }
-                                                if(strstr($command->getPermission(),';')){
-                                                        $this->alias[$per][] = array($command->getName(),true);
-                                                }
                                                 $attachment->setPermission($command->getPermission(),true);
+                                                $this->alias[$per][] = array($command->getName(),true);
                                         }else{
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][] = array($alias,false);
                                                 }
-                                                if(strstr($command->getPermission(),';')){
-                                                        $this->alias[$per][] = array($command->getName(),false);
-                                                }
                                                 $attachment->setPermission($command->getPermission(),false);
+                                                $this->alias[$per][] = array($command->getName(),false);
                                         }
                                         break;
                                         case $command->getName():
@@ -308,37 +354,21 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][] = array($alias,true);
                                                 }
-                                                if(isset($old_aliasPermission)){
-                                                        if(isset($old_aliasPermission[$per][$command->getName()])){
-                                                                $this->aliasPermission[$per][$command->getName()] = true;
-                                                        }
-                                                }
-                                                if(strstr($command->getPermission(),';')){
-                                                        $this->alias[$per][] = array($command->getName(),true);
-                                                        $this->aliasPermission[$per][$command->getName()] = true;
-                                                }
                                                 $command->setPermission("permissionplus.command.".$command->getName()."");
                                                 $attachment->setPermission($command->getPermission(),true);
+                                                $this->alias[$per][] = array($command->getName(),true);
                                         }else{
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][] = array($alias,false);
                                                 }
-                                                if(isset($old_aliasPermission)){
-                                                        if(isset($old_aliasPermission[$per][$command->getName()])){
-                                                                $this->aliasPermission[$per][$command->getName()] = false;
-                                                        }
-                                                }
-                                                if(strstr($command->getPermission(),';')){
-                                                        $this->alias[$per][] = array($command->getName(),false);
-                                                        $this->aliasPermission[$per][$command->getName()] = false;
-                                                }
                                                 $command->setPermission("permissionplus.command.".$command->getName()."");
                                                 $attachment->setPermission($command->getPermission(),false);
+                                                $this->alias[$per][] = array($command->getName(),false);
                                         }
                                         break;
                                         }
                                 }
-                        }
+                        }*/
                 }
         }
 
