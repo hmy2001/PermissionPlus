@@ -159,7 +159,7 @@ class CommandSystem{
                 }
         }
 
-        public function showSPermissionsList($sender) {
+        public function showSPermissionsList($sender){
                 $output = "";
                 $permission = array();
                 $clist = $this->Command->get('subcmd');
@@ -192,7 +192,7 @@ class CommandSystem{
                 }
         }
 
-        public function setSPermission($cmd, $sub, $permissions, $player) {
+        public function setSPermission($cmd, $sub, $permissions, $player){
                 $msg ="";
                 $return = array_fill_keys(PermissionSystem::API()->getPermissions(), false);
                 if(!empty($permissions)){
@@ -258,7 +258,7 @@ class CommandSystem{
                                 return false;
                         }
                 }
-                foreach($aliasdata as $data){
+                foreach($aliasdata[$permission] as $data){
                         if(!$data[1] and $data[0] === $cmd){
                                 return false;
                         }
