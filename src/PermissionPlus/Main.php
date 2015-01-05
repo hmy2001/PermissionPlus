@@ -276,13 +276,13 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                         foreach(array_keys($attachment->getPermissions()) as $old_perm){
                         $attachment->unsetPermission($old_perm);
                         }
-                        $this->alias = [];
-                        if(isset($this->aliasPermission[0])){
-                                $old_aliasPermission = $this->aliasPermission;
-                                $this->aliasPermission = [];
-                        }
                         foreach($this->getServer()->getCommandMap()->getCommands() as $command){
                                 foreach(CommandSystem::API()->get('command')[$per = PermissionSystem::API()->getUserPermission($player->getName())] as $new_perm => $en){
+                                        $this->alias[$per] = [];
+                                        if(isset($this->aliasPermission[$per])){
+                                                $old_aliasPermission[$per] = $this->aliasPermission[$per];
+                                                $this->aliasPermission[$per] = [];
+                                        }
                                         switch($new_perm){
                                         case $command->getPermission():
                                         if($en){
