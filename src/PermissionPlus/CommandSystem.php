@@ -258,10 +258,8 @@ class CommandSystem{
                                 return false;
                         }
                 }
-                foreach($aliasdata[$permission] as $data){
-                        if(!$data[1] and $data[0] === $cmd){
-                                return false;
-                        }
+                if(isset($aliasdata[$permission][$cmd]) and !$aliasdata[$permission][$cmd]){
+                        return false;
                 }
                 return true;
         }

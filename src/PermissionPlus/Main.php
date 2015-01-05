@@ -276,6 +276,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                 return $command;
                         }
                 }
+                return false;
         }
 
         public function setPermission($player){
@@ -286,11 +287,13 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                         }
                         foreach(CommandSystem::API()->get('command')[$per = PermissionSystem::API()->getUserPermission($player->getName())] as $new_perm => $en){
                                 $this->alias[$per] = [];
+                                $old_aliasPermission = $this->aliasPermission;
+                                $this->aliasPermission = [];
                                 $command = $this->getServer()->getCommandMap()->getCommand($new_perm);
                                 if($command instanceof Command){
                                         if($en){
                                                 foreach($command->getAliases() as $alias){
-                                                        $this->alias[$per][] = [$alias,true];
+                                                        $this->alias[$per][$alias] = true;
                                                 }
 
 
@@ -298,26 +301,36 @@ class Main extends PluginBase implements Listener, CommandExecutor{
 
                                         }else{
                                                 foreach($command->getAliases() as $alias){
-                                                        $this->alias[$per][] = [$alias,false];
+                                                        $this->alias[$per][$alias] = false;
                                                 }
+
+
+
+
+
                                         }
                                 }else{
                                         $command = $this->getPermission($new_perm);
-                                        if($en){
-                                                foreach($command->getAliases() as $alias){
-                                                        $this->alias[$per][] = [$alias,true];
+                                        if($command instanceof Command){
+                                                if($en){
+                                                        foreach($command->getAliases() as $alias){
+                                                                $this->alias[$per][$alias] = true;
+                                                        }
+                                                        if(strstr($command->getPermission(),';') or $old = $old_aliasPermission[$command->getName()]){
+                                                                $this->alias[$per][$command->getName()] = true;
+                                                                $this->aliasPermission[$command->getName()] = true;
+                                                        }
+                                                        $attachment->setPermission($command->getPermission(),true);
+                                                }else{
+                                                        foreach($command->getAliases() as $alias){
+                                                                $this->alias[$per][$alias] = false;
+                                                        }
+                                                        if(strstr($command->getPermission(),';') or $old_aliasPermission[$command->getName()]){
+                                                                $this->alias[$per][$command->getName()] = false;
+                                                                $this->aliasPermission[$command->getName()] = false;
+                                                        }
+                                                        $attachment->setPermission($command->getPermission(),false);
                                                 }
-
-
-
-
-                                        }else{
-                                                foreach($command->getAliases() as $alias){
-                                                        $this->alias[$per][] = [$alias,false];
-                                                }
-
-
-
                                         }
                                 }
                         }
