@@ -38,7 +38,6 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                         }
                 }
                 $this->alias = [];
-                $this->aliasPermissions = [];
 	}
 
 	public function onDisable(){
@@ -287,27 +286,26 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                         }
                         foreach(CommandSystem::API()->get('command')[$per = PermissionSystem::API()->getUserPermission($player->getName())] as $new_perm => $en){
                                 $this->alias[$per] = [];
-                                $old_aliasPermissions = $this->aliasPermissions;
-                                $this->aliasPermissions = [];
                                 $command = $this->getServer()->getCommandMap()->getCommand($new_perm);
                                 if($command instanceof Command){
                                         if($en){
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][$alias] = true;
                                                 }
-
-
-
-
+                                                if(strstr($command->getPermission(),';')){
+                                                        $this->alias[$per][$command->getName()] = true;
+                                                }
+                                                $command->setPermission("permissionplus.command.".$command->getName()."");
+                                                $attachment->setPermission($command->getPermission(),true);
                                         }else{
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][$alias] = false;
                                                 }
-
-
-
-
-
+                                                if(strstr($command->getPermission(),';')){
+                                                        $this->alias[$per][$command->getName()] = false;
+                                                }
+                                                $command->setPermission("permissionplus.command.".$command->getName()."");
+                                                $attachment->setPermission($command->getPermission(),false);
                                         }
                                 }else{
                                         $command = $this->getPermission($new_perm);
@@ -316,72 +314,22 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                                         foreach($command->getAliases() as $alias){
                                                                 $this->alias[$per][$alias] = true;
                                                         }
-                                                        if(strstr($command->getPermission(),';') or $old = $old_aliasPermissions[$command->getName()]){
+                                                        if(strstr($command->getPermission(),';')){
                                                                 $this->alias[$per][$command->getName()] = true;
-                                                                $this->aliasPermissions[$command->getName()] = true;
                                                         }
                                                         $attachment->setPermission($command->getPermission(),true);
                                                 }else{
                                                         foreach($command->getAliases() as $alias){
                                                                 $this->alias[$per][$alias] = false;
                                                         }
-                                                        if(strstr($command->getPermission(),';') or $old_aliasPermissions[$command->getName()]){
+                                                        if(strstr($command->getPermission(),';')){
                                                                 $this->alias[$per][$command->getName()] = false;
-                                                                $this->aliasPermissions[$command->getName()] = false;
                                                         }
                                                         $attachment->setPermission($command->getPermission(),false);
                                                 }
                                         }
                                 }
                         }
-
-
-
-
-
-
-
-
-/*
-                        foreach($this->getServer()->getCommandMap()->getCommands() as $command){
-
-
-                                        switch($new_perm){
-                                        case $command->getPermission():
-                                        if($en){
-                                                foreach($command->getAliases() as $alias){
-                                                        $this->alias[$per][] = array($alias,true);
-                                                }
-                                                $attachment->setPermission($command->getPermission(),true);
-                                                $this->alias[$per][] = array($command->getName(),true);
-                                        }else{
-                                                foreach($command->getAliases() as $alias){
-                                                        $this->alias[$per][] = array($alias,false);
-                                                }
-                                                $attachment->setPermission($command->getPermission(),false);
-                                                $this->alias[$per][] = array($command->getName(),false);
-                                        }
-                                        break;
-                                        case $command->getName():
-                                        if($en){
-                                                foreach($command->getAliases() as $alias){
-                                                        $this->alias[$per][] = array($alias,true);
-                                                }
-                                                $command->setPermission("permissionplus.command.".$command->getName()."");
-                                                $attachment->setPermission($command->getPermission(),true);
-                                                $this->alias[$per][] = array($command->getName(),true);
-                                        }else{
-                                                foreach($command->getAliases() as $alias){
-                                                        $this->alias[$per][] = array($alias,false);
-                                                }
-                                                $command->setPermission("permissionplus.command.".$command->getName()."");
-                                                $attachment->setPermission($command->getPermission(),false);
-                                                $this->alias[$per][] = array($command->getName(),false);
-                                        }
-                                        break;
-                                        }
-                                }
-                        }*/
                 }
         }
 
@@ -463,8 +411,8 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                         if(PermissionSystem::API()->get("cmd-whitelist")){
                                 $cmdCheck = CommandSystem::API()->checkPermission($username,$Main[0],$Sub[0],PermissionSystem::API()->get("notice"),$this->getLogger(),$this->alias);
                                 if(!$cmdCheck){
-                                        $event->setCancelled(true);
                                         $player->sendMessage("You don't have permissions to use this command.");
+                                        $event->setCancelled(true);
                                 }
                         }
                 }
