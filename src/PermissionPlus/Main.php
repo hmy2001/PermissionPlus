@@ -298,6 +298,7 @@ class Main extends PluginBase implements Listener, CommandExecutor{
                                                 $command->setPermission("permissionplus.command.".$command->getName()."");
                                                 $attachment->setPermission($command->getPermission(),true);
                                         }else{
+		                                $this->getLogger()->info($command->getName());
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][$alias] = false;
                                                 }
