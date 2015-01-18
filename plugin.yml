@@ -1,7 +1,7 @@
 name: PermissionPlus
 main: PermissionPlus\PermissionPlus
-version: 1.3.2
-api: [1.8.0]
+version: 1.4.0
+api: [1.11.0]
 load: STARTUP
 author: Hmy2001&BIOS
 authors: [Hmy2001&BIOS]
@@ -21,4 +21,3 @@ commands:
  ppconfig:
   aliases: [ppcfg]
   description: PermissionPlus preferences
-permissions:

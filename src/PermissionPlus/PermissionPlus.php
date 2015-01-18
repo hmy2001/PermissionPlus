@@ -152,7 +152,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 	$sender->sendMessage("Usage: /ppconfig cmdwhitelist <on | off>");
                 break;
                 }
-                $this->config->set("cmdw", $bool);
+                $this->config->set("cmdwhitelist", $bool);
                 $this->config->save();
                 if($bool){
                 	$sender->sendMessage("[Permission+] Truned on to the cmd-whitelist function.");
@@ -316,7 +316,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 
         public function showCPermissionsList($sender){
                 $output ="";
-                $permission =array();
+                $permission = array();
                 $clist = $this->config->get('command');
                 foreach($this->getPermissions() as $prm){
                         $pname = substr($prm, 0, 5);
@@ -513,10 +513,28 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
         }
 
         public function FormatConfig(){
-                //TODO
-                //Permission.yml
-                //Account.yml
-                //Command.yml
+                if(file_exists($this->getDataFolder(). "Account.yml") and file_exists($this->getDataFolder(). "Permission.yml") and file_exists($this->getDataFolder(). "Command.yml")){
+                        $Permission = new Config($this->getDataFolder()."Permission.yml", CONFIG::YAML);
+                        $Command = new Config($this->getDataFolder()."Command.yml", CONFIG::YAML);
+                        $Account = new Config($this->getDataFolder()."Account.yml", CONFIG::YAML);
+                        foreach($Permission->getAll() as $name => $data){
+                                $this->config->set($name,$data);
+                        }
+                        foreach($Command->getAll() as $name => $data){
+                                $this->config->set($name,$data);
+                        }
+                        $players = $this->config->get("player");
+                        foreach($Account->getAll() as $username => $per){
+                                $players[$username] = $per["Permission"];
+                        }
+                        $this->config->set("player",$players);
+                        $this->config->save();
+                        if(unlink($this->getDataFolder()."Account.yml") and unlink($this->getDataFolder()."Permission.yml") and unlink($this->getDataFolder()."Command.yml")){
+                                $this->getLogger()->info("ImportCompletion");
+                        }else{
+                                $this->getLogger()->info("ImportError");
+                        }
+                }
         }
 
         public function addPermission($permission){
