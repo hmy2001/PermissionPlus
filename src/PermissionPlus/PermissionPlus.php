@@ -33,7 +33,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	}
 
 /*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	ƒRƒ}ƒ“ƒh
+	ã‚³ãƒãƒ³ãƒ‰
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
 	public function onCommand(CommandSender $sender, Command $command, $label, array $args){
@@ -206,7 +206,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	}
 
 /*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-       ‘¼‚Ìˆ—
+       ä»–ã®å‡¦ç†
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
         public function setPPermission($player, $permission,$sender){
@@ -303,12 +303,23 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                         }else{
                                 $online = "OFFLINE";
                         }
+                        $pname = substr($permission, 0, 5);
                         switch($online){
                         case "OFFLINE":
-                        $sender->sendMessage(TextFormat::DARK_BLUE."[".$online."]".TextFormat::GREEN."[".$permission."]".TextFormat::WHITE.":  ".$username."");
+                        if($this->MainCommand($pname)[1] === 5){
+                                $sender->sendMessage(TextFormat::DARK_BLUE."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE.":  ".$username."");
+                        }else{
+                                $space = str_repeat(" ", 6-strlen($pname)-1);
+                                $sender->sendMessage(TextFormat::DARK_BLUE."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE."".$space.":  ".$username."");
+                        }
                         break;
                         case "ONLINE":
-                        $sender->sendMessage(TextFormat::DARK_RED."[".$online."]".TextFormat::GREEN."[".$permission."]".TextFormat::WHITE.":   ".$username."");
+                        if($this->MainCommand($pname)[1] === 5){
+                                $sender->sendMessage(TextFormat::DARK_RED."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE.":   ".$username."");
+                        }else{
+                                $space = str_repeat(" ", 6-strlen($pname)-1);
+                                $sender->sendMessage(TextFormat::DARK_RED."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE."".$space.":   ".$username."");
+                        }
                         break;
                         }
                 }
@@ -336,7 +347,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 $line = "|";
                 foreach($this->getCommands() as $command){
                         foreach($this->getPermissions() as $prm){
-                                $output .= "$line".$permission[$prm][$command];
+                                if(isset($permission[$prm][$command])){
+                                        $output .= "".$line."".$permission[$prm][$command];
+                                }else{
+                                        $output .= $line."[".TextFormat::RED."Error".TextFormat::WHITE."]";
+                                }
                         }
                         $output .= " :  /".$command."\n";
                 }
@@ -368,7 +383,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                         foreach(array_keys($subcmds) as $sub){
                         $line = "|";
                                 foreach($this->getPermissions() as $prm){
-                                        $output .= "$line".$permission[$prm][$command."_".$sub];
+                                        if(isset($permission[$prm][$command."_".$sub])){
+                                                $output .= "".$line."".$permission[$prm][$command."_".$sub];
+                                        }else{
+                                                $output .= "".$line."[".TextFormat::RED."Error".TextFormat::WHITE."]";
+                                        }
                                 }
                                 $sender->sendMessage("".$output.":  /".$command." ".$sub."");
                                 $output ="";
@@ -588,7 +607,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
         }
 
 /*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	CommandPermissionŠÖ˜A
+	CommandPermissioné–¢é€£
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
         public function getPermission($permission){
@@ -732,7 +751,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
         }
 
 /*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	–¼‘O•ÏX
+	åå‰å¤‰æ›´
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
         public function changeNametoEveryone(){
