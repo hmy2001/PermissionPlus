@@ -99,10 +99,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 break;
                 case "ppconfig":
 		$config = array_shift($args);
-           	switch($config){/*
+           	switch($config){
            	case "notice":
 		$bool = array_shift($args);
-		if(!$this->castBool($bool)){
+                $bool = $this->castBool($bool);
+		if($bool === "default"){
 			$sender->sendMessage("Usage: /ppconfig notice <on | off>");
 		break;
 		}
@@ -116,7 +117,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 break;
                 case "autoop":
                 $bool = array_shift($args);
-                if($bool = $this->castBool($bool) === "Error"){
+                $bool = $this->castBool($bool);
+		if($bool === "default"){
                 	$sender->sendMessage("Usage: /ppconfig autoop <on | off>");
                 break;
                 }
@@ -131,7 +133,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 break;
 		case "pername":
 		$bool = array_shift($args);
-		if($bool = $this->castBool($bool) === "Error"){
+                $bool = $this->castBool($bool);
+		if($bool === "default"){
                 	$sender->sendMessage("Usage: /ppconfig pername <on | off>");
                 break;
                 }
@@ -148,11 +151,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 case "cmdwhitelist":
                 case "cmdw":
                 $bool = array_shift($args);
-                if($bool = $this->castBool($bool) === "Error"){
+                $bool = $this->castBool($bool);
+		if($bool === "default"){
                 	$sender->sendMessage("Usage: /ppconfig cmdwhitelist <on | off>");
                 break;
                 }
-                $this->config->set("cmdwhitelist", $bool);
+                $this->config->set("cmd-whitelist", $bool);
                 $this->config->save();
                 if($bool){
                 	$sender->sendMessage("[Permission+] Truned on to the cmd-whitelist function.");
@@ -199,7 +203,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		$sender->sendMessage("Usage: /ppconfig add <rank name>");
 		$sender->sendMessage("Usage: /ppconfig remove <rank name>");
 		break;
-		}*/
+		}
                 break;
                 }
                 return true;
@@ -514,7 +518,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 return false;
                 break;
                 default:
-                return false;
+                return "default";
                 break;
                 }
         }
@@ -560,11 +564,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                         $this->config->set("permission", array_merge($this->config->get("permission"), array($permission => false)));
                         $this->config->set("command", array_merge($this->config->get("command"), array($permission => array_fill_keys($this->getCommands(),false))));
                         $this->config->set("subcmd", array_merge($this->config->get("subcmd"), array($permission => array())));
-                        foreach($this->Command->get("subcmd")["ADMIN"] as $cmd => $subcmds){
-                                $new_cmd = [];
-                                $new_cmd[$permission][$cmd] = array();
+                        $new_cmd = [];
+                        foreach($this->config->get("subcmd")["ADMIN"] as $cmd => $subcmds){
+                                $new_cmd[$cmd] = [];
                                 foreach(array_keys($subcmds) as $sub){
-                                        $new_cmd[$permission][$cmd][$sub] = false;
+                                        $new_cmd[$cmd][$sub] = false;
                                 }
                                 $this->config->set("subcmd", array_merge($this->config->get("subcmd"), array($permission => $new_cmd)));
                         }
@@ -576,12 +580,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 
         public function removePermission($permission){
                 $permission = strtoupper($permission);
-                if(isset($this->Permission->get("permission")[$permission]) && !$this->Permission->get("permission")[$permission]){
-                        $permissions = $this->Permission->get("permission");
+                if(isset($this->config->get("permission")[$permission]) && !$this->config->get("permission")[$permission]){
+                        $permissions = $this->config->get("permission");
                         unset($permissions[$permission]);
-                        $this->Permission->set("permission",$permissions);
-                        $cper = $this->Command->get("command");
-                        $sper = $this->Command->get("subcmd");
+                        $this->config->set("permission",$permissions);
+                        $cper = $this->config->get("command");
+                        $sper = $this->config->get("subcmd");
                         unset($cper[$permission]);
                         unset($sper[$permission]);
                         $this->config->set("command",$cper);
@@ -670,12 +674,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                 }
                         }
                         $player->recalculatePermissions();
+                        $player->removeAttachment($attachment);
                 }
         }
 
         public function getAttachment($player){
-                return $result = $player->addAttachment($this);
-                $player->removeAttachment($result);
+                return $player->addAttachment($this);
         }
 
         public function MainCommand($text){
