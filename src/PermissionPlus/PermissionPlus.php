@@ -99,10 +99,10 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 break;
                 case "ppconfig":
 		$config = array_shift($args);
-           	switch($config){
+           	switch($config){/*
            	case "notice":
 		$bool = array_shift($args);
-		if(!$bool = $this->castBool($bool)){
+		if(!$this->castBool($bool)){
 			$sender->sendMessage("Usage: /ppconfig notice <on | off>");
 		break;
 		}
@@ -116,7 +116,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 break;
                 case "autoop":
                 $bool = array_shift($args);
-                if(!$bool = $this->castBool($bool)){
+                if($bool = $this->castBool($bool) === "Error"){
                 	$sender->sendMessage("Usage: /ppconfig autoop <on | off>");
                 break;
                 }
@@ -131,7 +131,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 break;
 		case "pername":
 		$bool = array_shift($args);
-		if(!$bool = $this->castBool($bool)){
+		if($bool = $this->castBool($bool) === "Error"){
                 	$sender->sendMessage("Usage: /ppconfig pername <on | off>");
                 break;
                 }
@@ -148,7 +148,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 case "cmdwhitelist":
                 case "cmdw":
                 $bool = array_shift($args);
-                if(!$bool = $this->castBool($bool)){
+                if($bool = $this->castBool($bool) === "Error"){
                 	$sender->sendMessage("Usage: /ppconfig cmdwhitelist <on | off>");
                 break;
                 }
@@ -199,7 +199,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		$sender->sendMessage("Usage: /ppconfig add <rank name>");
 		$sender->sendMessage("Usage: /ppconfig remove <rank name>");
 		break;
-		}
+		}*/
                 break;
                 }
                 return true;
@@ -214,10 +214,6 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                         $msg = $this->permissionUsage("p");
                         $sender->sendMessage("Usage: /ppplayer <player> $msg");
                         return;
-                }
-                if(!$this->castPermission($permission)){
-                        $sender->sendMessage("[Permission+] Invalid value: \"$value\"");
-                        continue;
                 }
                 $permission = $this->castPermission($permission);
                 $players = $this->config->get("player");
@@ -519,6 +515,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 break;
                 default:
                 return false;
+                break;
                 }
         }
 
