@@ -627,6 +627,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                 $attachment->unsetPermission($old_perm);
                         }
                         $per = $this->getUserPermission($player->getName());
+                        $old_alias = [];
+                        if(isset($this->alias[$per])){
+                                $old_alias[$per] = $this->alias[$per];
+                        }else{
+                                $old_alias[$per] = [];
+                        }
                         $this->alias[$per] = [];
                         foreach($this->config->get('command')[$per] as $new_perm => $en){
                                 $command = $this->getServer()->getCommandMap()->getCommand($new_perm);
@@ -635,7 +641,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][$alias] = true;
                                                 }
-                                                if(strstr($command->getPermission(),';')){
+                                                if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
                                                         $this->alias[$per][$command->getName()] = true;
                                                 }
                                                 $command->setPermission("permissionplus.command.".$command->getName()."");
@@ -644,7 +650,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                                 foreach($command->getAliases() as $alias){
                                                         $this->alias[$per][$alias] = false;
                                                 }
-                                                if(strstr($command->getPermission(),';')){
+                                                if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
                                                         $this->alias[$per][$command->getName()] = false;
                                                 }
                                                 $command->setPermission("permissionplus.command.".$command->getName()."");
@@ -657,7 +663,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                                         foreach($command->getAliases() as $alias){
                                                                 $this->alias[$per][$alias] = true;
                                                         }
-                                                        if(strstr($command->getPermission(),';')){
+                                                        if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
                                                                 $this->alias[$per][$command->getName()] = true;
                                                         }
                                                         $attachment->setPermission($command->getPermission(),true);
@@ -665,7 +671,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                                         foreach($command->getAliases() as $alias){
                                                                 $this->alias[$per][$alias] = false;
                                                         }
-                                                        if(strstr($command->getPermission(),';')){
+                                                        if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
                                                                 $this->alias[$per][$command->getName()] = false;
                                                         }
                                                         $attachment->setPermission($command->getPermission(),false);
