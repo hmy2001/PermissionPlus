@@ -306,7 +306,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                         $pname = substr($permission, 0, 5);
                         switch($online){
                         case "OFFLINE":
-                        if($this->MainCommand($pname)[1] === 5){
+                        if(strlen($pname) === 5){
                                 $sender->sendMessage(TextFormat::DARK_BLUE."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE.":  ".$username."");
                         }else{
                                 $space = str_repeat(" ", 6-strlen($pname)-1);
@@ -314,7 +314,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                         }
                         break;
                         case "ONLINE":
-                        if($this->MainCommand($pname)[1] === 5){
+                        if(strlen($pname) === 5){
                                 $sender->sendMessage(TextFormat::DARK_RED."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE.":   ".$username."");
                         }else{
                                 $space = str_repeat(" ", 6-strlen($pname)-1);
