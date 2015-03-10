@@ -18,6 +18,7 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
+	private $attachment = [];
 
 	public function onEnable(){
 		$this->getLogger()->info("PermissionPlus loaded!");
@@ -337,10 +338,10 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                                 $permission[$prm][$command] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]";
                                         }else{
                                                 $space =str_repeat(" ", 6-strlen($pname)-1);
-                                                $permission[$prm][$command] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]" .$space;
+                                                $permission[$prm][$command] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]".$space."";
                                         }
                                 }else{
-                                        $permission[$prm][$command] ="       ";
+                                        $permission[$prm][$command] = "       ";
                                 }
                         }
                 }
@@ -363,7 +364,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 $permission = array();
                 $clist = $this->config->get('subcmd');
                 foreach($this->getPermissions() as $prm){
-                        $pname =substr($prm, 0, 5);
+                        $pname = substr($prm, 0, 5);
                         foreach($clist[$prm] as $command => $subcmds){
                                 foreach($subcmds as $sub => $enable){
                                         if($enable){
@@ -374,7 +375,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                                         $permission[$prm][$command."_".$sub] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]" .$space;
                                                 }
                                         }else{
-                                                $permission[$prm][$command."_".$sub] ="       ";
+                                                $permission[$prm][$command."_".$sub] = "       ";
                                         }
                                 }
                         }
@@ -680,12 +681,19 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                                 }
                         }
                         $player->recalculatePermissions();
-                        $player->removeAttachment($attachment);
                 }
         }
 
         public function getAttachment($player){
-                return $player->addAttachment($this);
+		if(!isset($this->attachment[$player->getName()])){
+			$this->attachment[$player->getName()] = $player->addAttachment($this);
+		}
+                return $this->attachment[$player->getName()];
+        }
+
+        public function removeAttachment($player){
+		$player->removeAttachment($this->attachment[$player->getName()]);
+                unset($this->attachment[$player->getName()]);
         }
 
         public function MainCommand($text){
@@ -740,6 +748,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 if($this->config->get("PerName")){
                         $this->changeName2($player);
                 }
+		$this->removeAttachment($player);
         }
 
         public function onCommandEvent(PlayerCommandPreprocessEvent $event){

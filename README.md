@@ -65,4 +65,8 @@ aliasの規制が初期化されない不具合修正
 前のconfigフォーマット形式に戻した
 githubへのソース掲載
 
+-1.4.1
+-1.4.2
+不具合修正
+
 Omattyao氏ThankYou!
