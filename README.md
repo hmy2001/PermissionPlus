@@ -67,6 +67,7 @@ githubへのソース掲載
 
 -1.4.1
 -1.4.2
+-1.4.3
 不具合修正
 
 Omattyao氏ThankYou!
