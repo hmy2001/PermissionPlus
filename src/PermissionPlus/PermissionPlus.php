@@ -624,9 +624,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
         public function setPermission($player){
                 if($this->config->get("cmd-whitelist")){
                         $attachment = $this->getAttachment($player);
-                        foreach(array_keys($attachment->getPermissions()) as $old_perm){
-                                $attachment->unsetPermission($old_perm);
-                        }
+                        $attachment->clearPermissions();
                         $per = $this->getUserPermission($player->getName());
                         $old_alias = [];
                         if(isset($this->alias[$per])){
@@ -692,7 +690,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
         }
 
         public function removeAttachment($player){
-		$player->removeAttachment($this->attachment[$player->getName()]);
+		$player->removeAttachment($this->getAttachment($player));
                 unset($this->attachment[$player->getName()]);
         }
 
