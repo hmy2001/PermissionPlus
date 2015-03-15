@@ -65,7 +65,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
                 $player = $sender->getServer()->getPlayerExact($player);
                 if($player instanceof Player){
 			$this->setPermission($player);
-			$this->changeName($player);
+			if($this->config->get("PerName")){
+                $this->changeName($player);
+            }
 		}
                 break;
 		case "ppcommand":
