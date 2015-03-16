@@ -1,73 +1,80 @@
 PermissionPlus
 ==============
 
-PermissionPlus‚ÍPMMPê—p‚Ìƒvƒ‰ƒOƒCƒ“‚Å‚·B
-OmattyaoŽ‚ªì¬‚µ‚½ƒvƒ‰ƒOƒCƒ“‚ð1.4Œü‚¯‚ÉˆÚA‚µ‚Ü‚µ‚½B
-OmattyaoŽ‚ÌƒuƒƒO‚©‚çˆø—pF
-ƒvƒŒƒCƒ„[‚É‚»‚ê‚¼‚êGUEST, TRUST, ADMIN‚ÌŒ ŒÀ‚ðŠ„‚è“–‚Ä‚éŽ–‚É‚æ‚Á‚ÄAŒ ŒÀ–ˆ‚ÉŽg‚¦‚éƒRƒ}ƒ“ƒh‚ð§ŒÀ‚Å‚«‚éƒvƒ‰ƒOƒCƒ“
+PermissionPlusã¯PMMPå°‚ç”¨ã®ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã§ã™ã€‚  
+Omattyaoæ°ãŒä½œæˆã—ãŸãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’1.4å‘ã‘ã«ç§»æ¤ã—ã¾ã—ãŸã€‚  
+Omattyaoæ°ã®ãƒ–ãƒ­ã‚°ã‹ã‚‰å¼•ç”¨ï¼š  
+ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãã‚Œãžã‚ŒGUEST, TRUST, ADMINã®æ¨©é™ã‚’å‰²ã‚Šå½“ã¦ã‚‹äº‹ã«ã‚ˆã£ã¦ã€æ¨©é™æ¯Žã«ä½¿ãˆã‚‹ã‚³ãƒžãƒ³ãƒ‰ã‚’åˆ¶é™ã§ãã‚‹ãƒ—ãƒ©ã‚°ã‚¤ãƒ³  
 
-ƒvƒŒƒCƒ„[‚ÉŒ ŒÀ‚ðŠ„‚è“–‚Ä‚½‚¢Žž‚Í
-/ppplayer [ƒvƒŒƒCƒ„[–¼] [Œ ŒÀ]
-‚ðƒRƒ“ƒ\[ƒ‹‚©ŠÅ”Â‚©‚çŽÀs‚µ‚Ä‚­‚¾‚³‚¢B
-—á‚¦‚Îu/ppplayer Omattyao adminv‚ÅOmattyao‚ÉAdminŒ ŒÀ‚ð•t—^‚·‚éŽ–‚ª‚Å‚«‚Ü‚·B[Œ ŒÀ]‚Ì•”•ª‚ÍGuest, Trust, Admin(‚»‚ê‚¼‚êg, t, a‚Å‚àOK)‚Ì‚Ç‚ê‚©‚ª“ü‚è‚Ü‚·B
-Œ ŒÀ‚ðŽ‚Á‚Ä‚¢‚È‚¢ƒvƒŒƒCƒ„[‚É‚ÍŽ©“®“I‚ÉGuest‚ðŠ„‚è“–‚Ä‚Ü‚·B
+ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«æ¨©é™ã‚’å‰²ã‚Šå½“ã¦ãŸã„æ™‚ã¯  
+'''
+/ppplayer [ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å] [æ¨©é™]
+'''
+ã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‹çœ‹æ¿ã‹ã‚‰å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚  
+ä¾‹ãˆã°ã€Œ/ppplayer Omattyao adminã€ã§Omattyaoã«Adminæ¨©é™ã‚’ä»˜ä¸Žã™ã‚‹äº‹ãŒã§ãã¾ã™ã€‚[æ¨©é™]ã®éƒ¨åˆ†ã¯Guest, Trust, Admin(ãã‚Œãžã‚Œg, t, aã§ã‚‚OK)ã®ã©ã‚Œã‹ãŒå…¥ã‚Šã¾ã™ã€‚  
+æ¨©é™ã‚’æŒã£ã¦ã„ãªã„ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã¯è‡ªå‹•çš„ã«Guestã‚’å‰²ã‚Šå½“ã¦ã¾ã™ã€‚  
 
-Œ ŒÀ‚ÌÝ’è‚Í•Û‘¶‚³‚êŽŸ‰ñˆÈ~‚Ì‹N“®Žž‚É‚à”½‰f‚³‚ê‚Ü‚·BŒ»Ý‚ÌŒ ŒÀ‚ÌÝ’è‚ðŠm”F‚µ‚½‚¢Žž‚Í
+æ¨©é™ã®è¨­å®šã¯ä¿å­˜ã•ã‚Œæ¬¡å›žä»¥é™ã®èµ·å‹•æ™‚ã«ã‚‚åæ˜ ã•ã‚Œã¾ã™ã€‚ç¾åœ¨ã®æ¨©é™ã®è¨­å®šã‚’ç¢ºèªã—ãŸã„æ™‚ã¯  
+'''
 /ppplayer
-‚ðƒRƒ“ƒ\[ƒ‹‚©‚çŽÀs‚µ‚Ä‚­‚¾‚³‚¢B
+'''
+ã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‹ã‚‰å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚  
 
-ƒvƒŒƒCƒ„[‚ÉŒ ŒÀ‚ðŠ„‚è“–‚Ä‚½‚¢Žž‚Í
-/ppplayer [ƒvƒŒƒCƒ„[–¼] [Œ ŒÀ]
-‚ðƒRƒ“ƒ\[ƒ‹‚©ŠÅ”Â‚©‚çŽÀs‚µ‚Ä‚­‚¾‚³‚¢B
-—á‚¦‚Îu/ppplayer Omattyao adminv‚ÅOmattyao‚ÉAdminŒ ŒÀ‚ð•t—^‚·‚éŽ–‚ª‚Å‚«‚Ü‚·B[Œ ŒÀ]‚Ì•”•ª‚ÍGuest, Trust, Admin(‚»‚ê‚¼‚êg, t, a‚Å‚àOK)‚Ì‚Ç‚ê‚©‚ª“ü‚è‚Ü‚·B
-Œ ŒÀ‚ðŽ‚Á‚Ä‚¢‚È‚¢ƒvƒŒƒCƒ„[‚É‚ÍŽ©“®“I‚ÉGuest‚ðŠ„‚è“–‚Ä‚Ü‚·B
+ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«æ¨©é™ã‚’å‰²ã‚Šå½“ã¦ãŸã„æ™‚ã¯  
+'''
+/ppplayer [ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å] [æ¨©é™]
+'''
+ã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‹çœ‹æ¿ã‹ã‚‰å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚  
+ä¾‹ãˆã°ã€Œ/ppplayer Omattyao adminã€ã§Omattyaoã«Adminæ¨©é™ã‚’ä»˜ä¸Žã™ã‚‹äº‹ãŒã§ãã¾ã™ã€‚[æ¨©é™]ã®éƒ¨åˆ†ã¯Guest, Trust, Admin(ãã‚Œãžã‚Œg, t, aã§ã‚‚OK)ã®ã©ã‚Œã‹ãŒå…¥ã‚Šã¾ã™ã€‚  
+æ¨©é™ã‚’æŒã£ã¦ã„ãªã„ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã¯è‡ªå‹•çš„ã«Guestã‚’å‰²ã‚Šå½“ã¦ã¾ã™ã€‚  
 
-Œ ŒÀ‚ÌÝ’è‚Í•Û‘¶‚³‚êŽŸ‰ñˆÈ~‚Ì‹N“®Žž‚É‚à”½‰f‚³‚ê‚Ü‚·BŒ»Ý‚ÌŒ ŒÀ‚ÌÝ’è‚ðŠm”F‚µ‚½‚¢Žž‚Í
+æ¨©é™ã®è¨­å®šã¯ä¿å­˜ã•ã‚Œæ¬¡å›žä»¥é™ã®èµ·å‹•æ™‚ã«ã‚‚åæ˜ ã•ã‚Œã¾ã™ã€‚ç¾åœ¨ã®æ¨©é™ã®è¨­å®šã‚’ç¢ºèªã—ãŸã„æ™‚ã¯  
+'''
 /ppplayer
-‚ðƒRƒ“ƒ\[ƒ‹‚©‚çŽÀs‚µ‚Ä‚­‚¾‚³‚¢B
+'''
+ã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‹ã‚‰å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚  
 
-XV—š—ð
--1.0.0:
-ƒŠƒŠ[ƒX
+æ›´æ–°å±¥æ­´
+* 1.0.0
+    * ãƒªãƒªãƒ¼ã‚¹
 
--1.0.1:
-ƒvƒŒƒCƒ„[‚ªƒ[ƒ‹ƒh‚É‹‚È‚¢‚Æ‚«‚É/ppplayer‚ðŽg‚¤‚ÆƒT[ƒo‚ªƒNƒ‰ƒbƒVƒ…‚·‚éƒoƒO‚ÌC³
+* 1.0.1
+    * ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒãƒ¯ãƒ¼ãƒ«ãƒ‰ã«å±…ãªã„ã¨ãã«/ppplayerã‚’ä½¿ã†ã¨ã‚µãƒ¼ãƒãŒã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã™ã‚‹ãƒã‚°ã®ä¿®æ­£
 
--1.0.2:
--1.0.3:
-•s–¾
+* 1.0.2
+* 1.0.3
+    * ä¸æ˜Ž
 
-//OmattyaoŽ‚ÌƒŠƒŠ[ƒX‚±‚±‚Ü‚Å
-//Hmy2001&BIOSŽ‚ÌƒŠƒŠ[ƒX‚±‚±‚©‚ç
--1.1.0 
-ƒeƒXƒgƒo[ƒWƒ‡ƒ“‚Å‚Ì•s‹ï‡C³
-ˆÚA”ÅƒŠƒŠ[ƒX(ˆê”ÊŒöŠJ)
+//Omattyaoæ°ã®ãƒªãƒªãƒ¼ã‚¹ã“ã“ã¾ã§
+//Hmy2001&BIOSæ°ã®ãƒªãƒªãƒ¼ã‚¹ã“ã“ã‹ã‚‰
+* 1.1.0
+    * ãƒ†ã‚¹ãƒˆãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§ã®ä¸å…·åˆä¿®æ­£
+    * ç§»æ¤ç‰ˆãƒªãƒªãƒ¼ã‚¹(ä¸€èˆ¬å…¬é–‹)
 
--1.2.0
-ƒRƒ}ƒ“ƒhƒp[ƒ~ƒbƒVƒ‡ƒ“ŠÖ˜A‚ÌC³
+* 1.2.0
+    * ã‚³ãƒžãƒ³ãƒ‰ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³é–¢é€£ã®ä¿®æ­£
 
--1.3.0
-ƒRƒ}ƒ“ƒhƒp[ƒ~ƒbƒVƒ‡ƒ“‚Å‚àƒRƒ}ƒ“ƒh‹K§ŽÀ‘•
-aliasƒRƒ}ƒ“ƒh‚à‹K§ŽÀ‘•
-ƒRƒ}ƒ“ƒhƒp[ƒ~ƒbƒVƒ‡ƒ“ŠÖ˜AC³
-command.yml‚ðÅVƒRƒ}ƒ“ƒhˆê——‚É·‚µ‘Ö‚¦
+* 1.3.0
+    * ã‚³ãƒžãƒ³ãƒ‰ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã§ã‚‚ã‚³ãƒžãƒ³ãƒ‰è¦åˆ¶å®Ÿè£…
+    * aliasã‚³ãƒžãƒ³ãƒ‰ã‚‚è¦åˆ¶å®Ÿè£…
+    * ã‚³ãƒžãƒ³ãƒ‰ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³é–¢é€£ä¿®æ­£
+    * command.ymlã‚’æœ€æ–°ã‚³ãƒžãƒ³ãƒ‰ä¸€è¦§ã«å·®ã—æ›¿ãˆ
 
--1.3.1
-alias‚Ì‹K§‚ª‰Šú‰»‚³‚ê‚È‚¢•s‹ï‡C³
-ƒCƒ“ƒ|[ƒg‘Î‰ž
-(1.3”Å‚Ìƒp[ƒ~ƒbƒVƒ‡ƒ“ƒvƒ‰ƒXÝ’èƒtƒ@ƒCƒ‹‚É‘Î‰žBƒo[ƒWƒ‡ƒ“‚ªŒÃ‚¢‚ÆAƒCƒ“ƒ|[ƒg‚Å‚«‚Ü‚¹‚ñB)
-ƒRƒ“ƒ\[ƒ‹ã‚É‚æ‚éŒ ŒÀ•\Ž¦‚É‘Î‚·‚éƒGƒ‰[‚ÌC³
-ƒoƒO•ñ‚È‚Ç‚ª‚È‚¯‚ê‚Î‚±‚ê‚ªÅŒã‚Ìƒo[ƒWƒ‡ƒ“‚Å‚·B
+* 1.3.1
+    * aliasã®è¦åˆ¶ãŒåˆæœŸåŒ–ã•ã‚Œãªã„ä¸å…·åˆä¿®æ­£
+    * ã‚¤ãƒ³ãƒãƒ¼ãƒˆå¯¾å¿œ<br>(1.3ç‰ˆã®ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ãƒ—ãƒ©ã‚¹è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾å¿œã€‚ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒå¤ã„ã¨ã€ã‚¤ãƒ³ãƒãƒ¼ãƒˆã§ãã¾ã›ã‚“ã€‚)
+    * ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ä¸Šã«ã‚ˆã‚‹æ¨©é™è¡¨ç¤ºã«å¯¾ã™ã‚‹ã‚¨ãƒ©ãƒ¼ã®ä¿®æ­£
+    * ãƒã‚°å ±å‘Šãªã©ãŒãªã‘ã‚Œã°ã“ã‚ŒãŒæœ€å¾Œã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§ã™ã€‚
 
--1.4.0
-Å“K‰»
-Œ ŒÀ‚ðíœ‚µ‚½ê‡‚»‚ÌŒ ŒÀ‚É‚È‚Á‚Ä‚¢‚½ƒvƒŒƒCƒ„[‚ÍƒQƒXƒg‚Ö•ÏX‚·‚é‚æ‚¤‚ÉB
-‘O‚ÌconfigƒtƒH[ƒ}ƒbƒgŒ`Ž®‚É–ß‚µ‚½
-github‚Ö‚Ìƒ\[ƒXŒfÚ
+* 1.4.0
+    * æœ€é©åŒ–
+    * æ¨©é™ã‚’å‰Šé™¤ã—ãŸå ´åˆãã®æ¨©é™ã«ãªã£ã¦ã„ãŸãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯ã‚²ã‚¹ãƒˆã¸å¤‰æ›´ã™ã‚‹ã‚ˆã†ã«ã€‚
+    * å‰ã®configãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆå½¢å¼ã«æˆ»ã—ãŸ
+    * githubã¸ã®ã‚½ãƒ¼ã‚¹æŽ²è¼‰
 
--1.4.1
--1.4.2
--1.4.3
-•s‹ï‡C³
+* 1.4.1
+* 1.4.2
+* 1.4.3
+    * ä¸å…·åˆä¿®æ­£
 
-OmattyaoŽThankYou!
+Omattyaoæ°ThankYou!
