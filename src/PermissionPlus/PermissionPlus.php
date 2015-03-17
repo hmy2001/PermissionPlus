@@ -51,7 +51,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				$player = array_shift($args);
 				$permission = array_shift($args);
 				if(is_null($player) or is_null($permission)){
-					if($username === "CONSOLE"){
+					if(!$sender instanceof Player){
 						$this->showPPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("p");
@@ -71,7 +71,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			case "ppcommand":
 				$command = array_shift($args);
 				if(is_null($command)){
-					if($username === "CONSOLE"){
+					if(!$sender instanceof Player){
 						$this->showCPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("c");
@@ -88,7 +88,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				$cmd = array_shift($args);
 				$subcmd = array_shift($args);
 				if(is_null($cmd) or is_null($subcmd)){
-					if($username === "CONSOLE"){
+					if(!$sender instanceof Player){
 						$this->showSPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("c");
