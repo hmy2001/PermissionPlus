@@ -27,6 +27,13 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		if(!file_exists($this->getDataFolder())) mkdir($this->getDataFolder());
 		$this->CreateConfig();
 		$this->FormatConfig();
+		if($this->getServer()->getCodename() === "活発(Kappatsu)フグ(Fugu)"){
+			$lang = $this->getProperty("settings.language", "en");
+		}elseif($this->getServer()->getCodename() === "絶好(Zekkou)ケーキ(Cake)"){
+			$lang = $this->config->get("lang");
+		}
+		$this->lang = new Lang($lang);
+		//
 		$this->alias = [];
 	}
 
@@ -527,6 +534,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			"notice" => true,
 			"autoop" => false,
 			"PerName" => false,
+			"lang" => "en",
 			"cmd-whitelist" => true,
 			"player" => array(),
 			"permission" => array(
