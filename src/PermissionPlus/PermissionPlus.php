@@ -22,7 +22,6 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	private $attachment = [];
 
 	public function onEnable(){
-		$this->getLogger()->info("PermissionPlus loaded!");
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		if(!file_exists($this->getDataFolder())) mkdir($this->getDataFolder());
 		$this->CreateConfig();
@@ -32,8 +31,16 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		}elseif($this->getServer()->getCodename() === "絶好(Zekkou)ケーキ(Cake)"){
 			$lang = $this->config->get("lang");
 		}
-		$this->lang = new Lang($lang);
-		//
+		if(\Phar::running(true) !== ""){
+			$this->lang = new Lang(\Phar::running(true) . "/src/PermissionPlus/lang/");
+		}else{
+			$this->lang = new Lang($this->getDataFolder()."src/PermissionPlus/lang/");
+		}
+		if(!$this->lang->LoadLang($lang)){
+			$this->getServer()->shutdown();
+		}else{
+			$this->getLogger()->info($this->lang->getText("select.lang"));
+		}
 		$this->alias = [];
 	}
 
@@ -156,6 +163,18 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							$this->changeNametoEveryone2();
 						}
 						break;
+					case "lang":
+						$bool = array_shift($args);
+						if($bool === ""){
+							$sender->sendMessage("Usage: /ppconfig lang <language>");
+							break;
+						}
+						if($this->lang->LoadLang($bool)){{
+							$this->getLogger()->info($this->lang->getText("select.lang"));
+							$this->config->set("lang", $bool);
+							$this->config->save();
+						}
+						break;
 					case "cmdwhitelist":
 					case "cmdw":
 						$bool = array_shift($args);
@@ -208,6 +227,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$sender->sendMessage("Usage: /ppconfig notice <on | off>");
 						$sender->sendMessage("Usage: /ppconfig autoop <on | off>");
 						$sender->sendMessage("Usage: /ppconfig pername <on | off>");
+						$sender->sendMessage("Usage: /ppconfig lang <language>");
 						$sender->sendMessage("Usage: /ppconfig add <rank name>");
 						$sender->sendMessage("Usage: /ppconfig remove <rank name>");
 						break;
