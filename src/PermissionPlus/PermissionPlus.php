@@ -54,12 +54,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		switch($command->getName()){
 			case "pp":
 				$msg = $this->permissionUsage("p");
-				$sender->sendMessage("Usage: /ppplayer <player> $msg");
+				$sender->sendMessage($this->lang->getText("usage.p")." $msg");
 				$msg = $this->permissionUsage("c");
-				$sender->sendMessage("Usage: /ppcommand <command or commandPermission> $msg");
+				$sender->sendMessage($this->lang->getText("usage.c")." $msg");
 				$msg = $this->permissionUsage("c");
-				$sender->sendMessage("Usage: /ppsub <cmd> <subcmd> $msg");
-				$sender->sendMessage("Usage: /ppconfig");
+				$sender->sendMessage($this->lang->getText("usage.sc")." $msg");
+				$sender->sendMessage($this->lang->getText("usage.pc"));
 				break;
 			case "ppplayer":
 				$player = array_shift($args);
@@ -69,7 +69,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->showPPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("p");
-					$sender->sendMessage("Usage: /ppplayer <player> $msg");
+					$sender->sendMessage($this->lang->getText("usage.p")." $msg");
 					break;
 				}
 				$this->setPPermission($player, $permission,$sender);
@@ -89,7 +89,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->showCPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("c");
-					$sender->sendMessage("Usage: /ppcommand <command or commandPermission> $msg");
+					$sender->sendMessage($this->lang->getText("usage.c")." $msg");
 					break;
 				}
 				$this->setCPermission($command,$args,$sender);
@@ -106,7 +106,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->showSPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("c");
-					$sender->sendMessage("Usage: /ppsub <cmd> <subcmd> $msg");
+					$sender->sendMessage($this->lang->getText("usage.sc")." $msg");
 					break;
 				}
 				$this->setSPermission($cmd, $subcmd, $args, $sender);
@@ -165,11 +165,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						break;
 					case "lang":
 						$bool = array_shift($args);
-						if($bool === ""){
+						if($bool === "" or !isset($bool)){
 							$sender->sendMessage("Usage: /ppconfig lang <language>");
 							break;
 						}
-						if($this->lang->LoadLang($bool)){{
+						if($this->lang->LoadLang($bool)){
 							$this->getLogger()->info($this->lang->getText("select.lang"));
 							$this->config->set("lang", $bool);
 							$this->config->save();
