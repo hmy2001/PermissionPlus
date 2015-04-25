@@ -69,7 +69,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->showPPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("p");
-					$sender->sendMessage($this->lang->getText("usage.p")." $msg");
+					$sender->sendMessage($this->lang->getText("usage")." /ppplayer ".$this->lang->getText("usage.p")." $msg");
 					break;
 				}
 				$this->setPPermission($player, $permission,$sender);
@@ -89,7 +89,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->showCPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("c");
-					$sender->sendMessage($this->lang->getText("usage.c")." $msg");
+					$sender->sendMessage($this->lang->getText("usage")." /ppcommand ".$this->lang->getText("usage.c")." $msg");
 					break;
 				}
 				$this->setCPermission($command,$args,$sender);
@@ -106,7 +106,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->showSPermissionsList($sender);
 					}
 					$msg = $this->permissionUsage("c");
-					$sender->sendMessage($this->lang->getText("usage.sc")." $msg");
+					$sender->sendMessage($this->lang->getText("usage")." /ppsub ".$this->lang->getText("usage.sc")." $msg");
 					break;
 				}
 				$this->setSPermission($cmd, $subcmd, $args, $sender);
