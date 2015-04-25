@@ -27,7 +27,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		$this->CreateConfig();
 		$this->FormatConfig();
 		if($this->getServer()->getCodename() === "活発(Kappatsu)フグ(Fugu)"){
-			$lang = $this->getProperty("settings.language", "en");
+			$lang = $this->getServer()->getProperty("settings.language", "en");
 		}elseif($this->getServer()->getCodename() === "絶好(Zekkou)ケーキ(Cake)"){
 			$lang = $this->config->get("lang");
 		}
@@ -54,12 +54,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		switch($command->getName()){
 			case "pp":
 				$msg = $this->permissionUsage("p");
-				$sender->sendMessage($this->lang->getText("usage.p")." $msg");
+				$sender->sendMessage($this->lang->getText("usage")." /ppplayer ".$this->lang->getText("usage.p")." $msg");
 				$msg = $this->permissionUsage("c");
-				$sender->sendMessage($this->lang->getText("usage.c")." $msg");
+				$sender->sendMessage($this->lang->getText("usage")." /ppcommand ".$this->lang->getText("usage.c")." $msg");
 				$msg = $this->permissionUsage("c");
-				$sender->sendMessage($this->lang->getText("usage.sc")." $msg");
-				$sender->sendMessage($this->lang->getText("usage.pc"));
+				$sender->sendMessage($this->lang->getText("usage")." /ppsub ".$this->lang->getText("usage.sc")." $msg");
+				$sender->sendMessage($this->lang->getText("usage")." /ppconfig");
 				break;
 			case "ppplayer":
 				$player = array_shift($args);

@@ -13,6 +13,11 @@ class Lang{
 
 	public function LoadLang($lang){
 		$lang = strtolower($lang);
+		switch($lang){
+			case "jpn":
+			$lang = "ja";
+			break;
+		}
 		if(file_exists($this->path.$lang.".ini") and strlen($content = file_get_contents($this->path.$lang.".ini")) > 0){
 			if(isset($this->Text)){
 				unset($this->Text);
