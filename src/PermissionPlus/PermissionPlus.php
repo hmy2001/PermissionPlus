@@ -125,9 +125,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->config->set("notice", $bool);
 						$this->config->save();
 						if($bool){
-							$sender->sendMessage("[Permission+] Truned on to the notify function.");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.on", ["notify"]));//TODO
 						}else{
-							$sender->sendMessage("[Permission+] Truned off to the notify function.");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.off", ["notify"]));
 						}
 						break;
 					case "autoop":

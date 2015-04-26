@@ -53,18 +53,21 @@ class Lang{
 	public function getText($textname){
 		if(isset($this->Text[$textname])){
 			return $this->Text[$textname];
-		}else{
-			$this->getLogger()->error($this->getText("text.error"));
-			return false;
 		}
+		return $this->Text["text.error"];
 	}
 
 	public function transactionText($textname, $transaction){
-		if($text = $this->Text[$textname]){
-			//TODO
-		}else{
-			$this->getLogger()->error($this->getText("text.error"));
+		$text = $this->getText($textname);
+		if($text !== $this->Text["text.error"]){
+			if(is_array($transaction)){
+				for($i = 0; $i === count($transaction) - 1; $i++){
+					$text = str_replace("{%$i}", $transaction[$i], $text);
+				}
+			}
+			return $text;
 		}
+		return $this->Text["text.error"];
 	}
 
 	public function getLogger(){
