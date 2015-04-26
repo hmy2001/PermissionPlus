@@ -119,7 +119,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$bool = array_shift($args);
 						$bool = $this->castBool($bool);
 						if($bool === "default"){
-							$sender->sendMessage("Usage: /ppconfig notice <on | off>");
+							$sender->sendMessage($this->lang->getText("usage")." /ppconfig notice ".$this->lang->getText("usage.onoff")."");
 							break;
 						}
 						$this->config->set("notice", $bool);
@@ -134,7 +134,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$bool = array_shift($args);
 						$bool = $this->castBool($bool);
 						if($bool === "default"){
-							$sender->sendMessage("Usage: /ppconfig autoop <on | off>");
+							$sender->sendMessage($this->lang->getText("usage")." /ppconfig autoop ".$this->lang->getText("usage.onoff")."");
 							break;
 						}
 						$this->config->set("autoop", $bool);
@@ -150,7 +150,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$bool = array_shift($args);
 						$bool = $this->castBool($bool);
 						if($bool === "default"){
-							$sender->sendMessage("Usage: /ppconfig pername <on | off>");
+							$sender->sendMessage($this->lang->getText("usage")." /ppconfig pername ".$this->lang->getText("usage.onoff")."");
 							break;
 						}
 						$this->config->set("PerName", $bool);
@@ -166,7 +166,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					case "lang":
 						$bool = array_shift($args);
 						if($bool === "" or !isset($bool)){
-							$sender->sendMessage("Usage: /ppconfig lang <language>");
+							$sender->sendMessage($this->lang->getText("usage")." /ppconfig lang ".$this->lang->getText("usage.lang")."");
 							break;
 						}
 						if($this->lang->LoadLang($bool)){
@@ -180,7 +180,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$bool = array_shift($args);
 						$bool = $this->castBool($bool);
 						if($bool === "default"){
-							$sender->sendMessage("Usage: /ppconfig cmdwhitelist <on | off>");
+							$sender->sendMessage($this->lang->getText("usage")." /ppconfig cmdwhitelist ".$this->lang->getText("usage.onoff")."");
 							break;
 						}
 						$this->config->set("cmd-whitelist", $bool);
@@ -189,13 +189,13 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							$sender->sendMessage("[Permission+] Truned on to the cmd-whitelist function.");
 						}else{
 							$sender->sendMessage("[Permission+] Truned off to the cmd-whitelist function.");
-							$sender->sendMessage("".TextFormat::DARK_RED."[Permission+] You have to restart PocketMine-MP to apply the setting!".TextFormat::WHITE."");
+							$sender->sendMessage(TextFormat::DARK_RED."[Permission+] You have to restart PocketMine-MP to apply the setting!".TextFormat::WHITE."");
 						}
 						break;
 					case "add":
 						$name = array_shift($args);
 						if(empty($name) || !$this->isAlnum($name)){
-							$sender->sendMessage("Usage: /ppconfig add <rank name>");
+							$sender->sendMessage($this->lang->getText("usage")." /ppconfig add ".$this->lang->getText("usage.rankname")."");
 							break;
 						}
 						if($this->addPermission($name)){
@@ -208,7 +208,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					case "remove":
 						$name = array_shift($args);
 						if(empty($name) || !$this->isAlnum($name)){
-							$sender->sendMessage("Usage: /ppconfig remove <rank name>");
+							$sender->sendMessage($this->lang->getText("usage")." /ppconfig remove ".$this->lang->getText("usage.rankname")."");
 							break;
 						}
 						if($this->removePermission($name)){
@@ -224,12 +224,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						break;
 					case "":
 					default:
-						$sender->sendMessage("Usage: /ppconfig notice <on | off>");
-						$sender->sendMessage("Usage: /ppconfig autoop <on | off>");
-						$sender->sendMessage("Usage: /ppconfig pername <on | off>");
-						$sender->sendMessage("Usage: /ppconfig lang <language>");
-						$sender->sendMessage("Usage: /ppconfig add <rank name>");
-						$sender->sendMessage("Usage: /ppconfig remove <rank name>");
+						$sender->sendMessage($this->lang->getText("usage")." /ppconfig notice ".$this->lang->getText("usage.onoff")."");
+						$sender->sendMessage($this->lang->getText("usage")." /ppconfig autoop ".$this->lang->getText("usage.onoff")."");
+						$sender->sendMessage($this->lang->getText("usage")." /ppconfig pername ".$this->lang->getText("usage.onoff")."");
+						$sender->sendMessage($this->lang->getText("usage")." /ppconfig lang ".$this->lang->getText("usage.lang")."");
+						$sender->sendMessage($this->lang->getText("usage")." /ppconfig add ".$this->lang->getText("usage.rankname")."");
+						$sender->sendMessage($this->lang->getText("usage")." /ppconfig remove ".$this->lang->getText("usage.rankname")."");
 						break;
 				}
 				break;
