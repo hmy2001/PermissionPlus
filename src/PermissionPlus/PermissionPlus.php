@@ -125,7 +125,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->config->set("notice", $bool);
 						$this->config->save();
 						if($bool){
-							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.on", ["notify"]));//TODO
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.on", ["notify"]));
 						}else{
 							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.off", ["notify"]));
 						}
@@ -140,10 +140,10 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->config->set("autoop", $bool);
 						$this->config->save();
 						if($bool){
-							$sender->sendMessage("[Permission+] Truned on to the auto op function.");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.on", ["auto op"]));
 							$this->giveOPtoEveryone();
 						}else{
-							$sender->sendMessage("[Permission+] Truned off to the auto op function.");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.off", ["auto op"]));
 						}
 						break;
 					case "pername":
@@ -156,10 +156,10 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->config->set("PerName", $bool);
 						$this->config->save();
 						if($bool){
-							$sender->sendMessage("[Permission+] Truned on to the PerName function.");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.on", ["PerName"]));
 							$this->changeNametoEveryone();
 						}else{
-							$sender->sendMessage("[Permission+] Truned off to the PerName function.");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.off", ["PerName"]));
 							$this->changeNametoEveryone2();
 						}
 						break;
@@ -186,10 +186,10 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						$this->config->set("cmd-whitelist", $bool);
 						$this->config->save();
 						if($bool){
-							$sender->sendMessage("[Permission+] Truned on to the cmd-whitelist function.");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.on", ["cmd-whitelist"]));
 						}else{
-							$sender->sendMessage("[Permission+] Truned off to the cmd-whitelist function.");
-							$sender->sendMessage(TextFormat::DARK_RED."[Permission+] You have to restart PocketMine-MP to apply the setting!".TextFormat::WHITE."");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("pc.off", ["cmd-whitelist"]));
+							$sender->sendMessage(TextFormat::DARK_RED."[Permission+] ".$this->lang->getText("restart")."".TextFormat::WHITE."");
 						}
 						break;
 					case "add":
@@ -199,9 +199,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							break;
 						}
 						if($this->addPermission($name)){
-							$sender->sendMessage("[Permission+] Successful!");
+							$sender->sendMessage("[Permission+] ".$this->lang->getText("success")."");
 						}else{
-							$sender->sendMessage("[Permission+] Failed to add!");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("failed", [$this->lang->getText("add")]));
 						}
 						break;
 					case "rm":
@@ -212,14 +212,14 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							break;
 						}
 						if($this->removePermission($name)){
-							$sender->sendMessage("[Permission+] Successful!");
+							$sender->sendMessage("[Permission+] ".$this->lang->getText("success")."");
 							$this->ResetPermission($name);
 							foreach(Server::getInstance()->getOnlinePlayers() as $player){
 								$this->changeName($player);
 								$this->setPermission($player);
 							}
 						}else{
-							$sender->sendMessage("[Permission+] Failed to remove!");
+							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("failed", [$this->lang->getText("remove")]));
 						}
 						break;
 					case "":
@@ -241,7 +241,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	public function setPPermission($player, $permission,$sender){
 		if(!$this->castPermission($permission)){
 			$msg = $this->permissionUsage("p");
-			$sender->sendMessage("Usage: /ppplayer <player> $msg");
+			$sender->sendMessage($this->lang->getText("usage")." /ppplayer ".$this->lang->getText("usage.p")." $msg");
 			return;
 		}
 		$permission = $this->castPermission($permission);
@@ -249,10 +249,10 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		$players[$player] = $permission;
 		$this->config->set("player",$players);
 		$this->config->save();
-		$sender->sendMessage("[Permission+] Gived ".$permission." to ".$player.".");
+		$sender->sendMessage("[Permission+] ".$this->lang->transactionText("per.give.s", [$permission, $player])."");
 		$player = $sender->getServer()->getPlayerExact($player);
 		if($player instanceof Player){
-			$player->sendMessage("[PermissionPlus] Your permission has been changed into ".$permission." !");
+			$player->sendMessage("[PermissionPlus] ".$this->lang->transactionText("per.give.p", [$permission])."");
 		}
 	}
 

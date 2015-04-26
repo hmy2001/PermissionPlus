@@ -61,7 +61,7 @@ class Lang{
 		$text = $this->getText($textname);
 		if($text !== $this->Text["text.error"]){
 			if(is_array($transaction)){
-				for($i = 0; $i === count($transaction) - 1; $i++){
+				for($i = 0; $i < count($transaction); $i++){
 					$text = str_replace("{%$i}", $transaction[$i], $text);
 				}
 			}
