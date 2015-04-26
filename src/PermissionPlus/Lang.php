@@ -54,15 +54,17 @@ class Lang{
 		if(isset($this->Text[$textname])){
 			return $this->Text[$textname];
 		}else{
-			return "文字列が見つかりませんでした。";
+			$this->getLogger()->error($this->getText("text.error"));
+			return false;
 		}
 	}
 
 	public function transactionText($textname, $transaction){
-		if($text = $this->Text[$textname] !== "文字列が見つかりませんでした。"){
+		if($text = $this->Text[$textname]){
 			//TODO
+		}else{
+			$this->getLogger()->error($this->getText("text.error"));
 		}
-		return "文字列が見つかりませんでした。";
 	}
 
 	public function getLogger(){

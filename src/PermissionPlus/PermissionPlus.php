@@ -361,11 +361,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					if($this->config->get("permission")[$prm]){
 						$permission[$prm][$command] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]";
 					}else{
-						$space =str_repeat(" ", 6-strlen($pname)-1);
-						$permission[$prm][$command] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]".$space."";
+						$space = str_repeat(" ", 6-strlen($pname)-1);
+						$permission[$prm][$command] = "[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]".$space."";
 					}
 				}else{
-					$permission[$prm][$command] = "	   ";
+					$permission[$prm][$command] = "       ";
 				}
 			}
 		}
@@ -393,13 +393,13 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				foreach($subcmds as $sub => $enable){
 					if($enable){
 						if($this->config->get("permission")[$prm]){
-							$permission[$prm][$command."_".$sub] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]";
+							$permission[$prm][$command."_".$sub] = "[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]";
 						}else{
 							$space =str_repeat(" ", 6-strlen($pname)-1);
-							$permission[$prm][$command."_".$sub] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]" .$space;
+							$permission[$prm][$command."_".$sub] = "[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]" .$space;
 						}
 					}else{
-						$permission[$prm][$command."_".$sub] = "	   ";
+						$permission[$prm][$command."_".$sub] = "       ";
 					}
 				}
 			}
@@ -415,7 +415,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					}
 				}
 				$sender->sendMessage("".$output.":  /".$command." ".$sub."");
-				$output ="";
+				$output = "";
 			}
 		}
 	}
