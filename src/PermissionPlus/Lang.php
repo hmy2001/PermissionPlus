@@ -41,7 +41,7 @@ class Lang{
 			$this->LangName = $lang;
 			return true;
 		}else{
-			if(isset($this->Text)){
+			if(isset($this->Text["languagefile.error"])){
 				$this->getLogger()->error($this->getText("languagefile.error"));
 			}else{
 				$this->getLogger()->error("Failed to read the language file...");
@@ -53,8 +53,11 @@ class Lang{
 	public function getText($textname){
 		if(isset($this->Text[$textname])){
 			return $this->Text[$textname];
+		}elseif(isset($this->Text[$textname]["text.error"])){
+			return $this->Text["text.error"];
+		}else{
+			return "Failed to read the text...";
 		}
-		return $this->Text["text.error"];
 	}
 
 	public function transactionText($textname, $transaction){

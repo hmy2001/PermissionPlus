@@ -26,9 +26,13 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		if(!file_exists($this->getDataFolder())) mkdir($this->getDataFolder());
 		$this->CreateConfig();
 		$this->FormatConfig();
-		if($this->getServer()->getCodename() === "活発(Kappatsu)フグ(Fugu)"){
-			$lang = $this->getServer()->getProperty("settings.language", "en");
-		}elseif($this->getServer()->getCodename() === "絶好(Zekkou)ケーキ(Cake)"){
+		if($this->config->get("lang") === "PocketMine"){
+			if($this->getServer()->getCodename() === "活発(Kappatsu)フグ(Fugu)"){
+				$lang = $this->getServer()->getProperty("settings.language", "en");
+			}else{
+				$lang = "en";
+			}
+		}else{
 			$lang = $this->config->get("lang");
 		}
 		if(\Phar::running(true) !== ""){
@@ -37,7 +41,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$this->lang = new Lang($this->getDataFolder()."src/PermissionPlus/lang/");
 		}
 		if(!$this->lang->LoadLang($lang)){
-			$this->getServer()->shutdown();
+			if($this->lang->LoadLang("en")){
+				$this->getLogger()->info($this->lang->getText("select.lang"));
+			}else{
+				$this->getServer()->shutdown();
+			}
 		}else{
 			$this->getLogger()->info($this->lang->getText("select.lang"));
 		}
@@ -169,6 +177,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							$sender->sendMessage($this->lang->getText("usage")." /ppconfig lang ".$this->lang->getText("usage.lang")."");
 							break;
 						}
+						if($this->castBool($bool) === "default" and $bool === "PocketMine"){
+							$bool = $this->getServer()->getProperty("settings.language", "en");
+						}elseif($bool === "default"){
+							$sender->sendMessage($this->lang->getText("usage")." /ppconfig lang ".$this->lang->getText("usage.lang")."");
+							break;
+						}
 						if($this->lang->LoadLang($bool)){
 							$this->getLogger()->info($this->lang->getText("select.lang"));
 							$this->config->set("lang", $bool);
@@ -263,7 +277,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			foreach($permissions as $permission){
 				$value = $permission;
 				if(!$this->castPermission($permission)){
-					$sender->sendMessage("[Permission+] Invalid value: \"$value\"");
+					$sender->sendMessage("[Permission+] ".$this->lang->getText("invalid.value").": \"$value\"");
 					continue;
 				}
 				$permission = $this->castPermission($permission);
