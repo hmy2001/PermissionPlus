@@ -296,9 +296,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$this->config->save();
 		}
 		if(empty($msg)){
-			$sender->sendMessage("[Permission+] \"/".$command."\" was disabled.");
+			$sender->sendMessage("[Permission+] ".$this->lang->transactionText("cmd.disable", ["\"/".$command."\""])."");
 		}else{
-			$sender->sendMessage("[Permission+] Assigned ".$msg."to \"/".$command."\".");
+			$sender->sendMessage("[Permission+] ".$this->lang->transactionText("cmd.change", ["\"/".$command."\"", $msg])."");
 		}
 	}
 
@@ -309,7 +309,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			foreach($permissions as $permission){
 				$value = $permission;
 				if(!$this->castPermission($permission)) {
-					$player->sendMessage("[Permission+] Invalid value: \"$value\"");
+					$player->sendMessage("[Permission+] ".$this->lang->getText("invalid.value").": \"$value\"");
 					continue;
 				}
 				$permission = $this->castPermission($permission);
@@ -328,9 +328,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$this->config->save();
 		}
 		if(empty($msg)){
-			$player->sendMessage("[Permission+] \"/".$cmd." ".$sub."\" was disabled.");
+			$player->sendMessage("[Permission+] ".$this->lang->transactionText("cmd.disable", ["\"/".$cmd." ".$sub."\""])."");
 		}else{
-			$player->sendMessage("[Permission+] Assigned ".$msg."to \"/".$cmd." ".$sub."\".");
+			$player->sendMessage("[Permission+] ".$this->lang->transactionText("cmd.change", ["\"/".$cmd." ".$sub."\"", $msg])."");
 		}
 	}
 
