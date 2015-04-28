@@ -437,8 +437,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	public function checkPermission($player,$cmd,$sub,$notice,$usage){
 		$permission = $this->getUserPermission($player);
 		if($notice and !isset($this->config->get('command')['ADMIN'][$cmd])){
-			$usage->info("NOTICE: \"/".$cmd."\" permission is not setted!");
-			$usage->info("Usage: /ppcommand ".$cmd." (g) (t) (a)");
+			$usage->info("".$this->lang->transactionText("per.not", ["\"/".$cmd."\""])."");
+			$usage->info($this->lang->getText("usage")." /ppcommand ".$cmd." (g) (t) (a)");
 		}
 		if(!empty($sub)){
 			if(isset($this->config->get('subcmd')[$permission][$cmd][$sub]) && !$this->config->get('subcmd')[$permission][$cmd][$sub]){
@@ -719,9 +719,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$this->config->set("player",$players);
 			$this->config->save();
 			if(unlink($this->getDataFolder()."Account.yml") and unlink($this->getDataFolder()."Permission.yml") and unlink($this->getDataFolder()."Command.yml")){
-				$this->getLogger()->info("ImportCompletion");
+				$this->getLogger()->info("".$this->lang->getText("import.success")."");
 			}else{
-				$this->getLogger()->info("ImportError");
+				$this->getLogger()->info("".$this->lang->getText("import.error")."");
 			}
 		}
 	}
