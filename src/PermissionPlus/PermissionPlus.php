@@ -434,11 +434,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		}
 	}
 
-	public function checkPermission($player,$cmd,$sub,$notice,$usage){
+	public function checkPermission($player,$cmd,$sub,$notice){
 		$permission = $this->getUserPermission($player);
 		if($notice and !isset($this->config->get('command')['ADMIN'][$cmd])){
-			$usage->info("".$this->lang->transactionText("per.not", ["\"/".$cmd."\""])."");
-			$usage->info($this->lang->getText("usage")." /ppcommand ".$cmd." (g) (t) (a)");
+			$this->getLogger()->info("".$this->lang->transactionText("per.not", ["\"/".$cmd."\""])."");
+			$this->getLogger()->info($this->lang->getText("usage")." /ppcommand ".$cmd." (g) (t) (a)");
 		}
 		if(!empty($sub)){
 			if(isset($this->config->get('subcmd')[$permission][$cmd][$sub]) && !$this->config->get('subcmd')[$permission][$cmd][$sub]){
@@ -619,7 +619,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					'ppplayer' => true,
 					'ppcommand' => true,
 					'ppconfig' => true,
-					),
+				),
 				"TRUST" => array(
 					'ban' => false,
 					'ban-ip' => false,
@@ -657,7 +657,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					'ppplayer' => false,
 					'ppcommand' => false,
 					'ppconfig' => false,
-					),
+				),
 				"GUEST" => array(
 					'ban' => false,
 					'ban-ip' => false,
@@ -695,9 +695,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					'ppplayer' => false,
 					'ppcommand' => false,
 					'ppconfig' => false,
-					),
 				),
-				));
+			),
+		));
 		$this->config->save();
 	}
 
@@ -859,31 +859,6 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		unset($this->attachment[$player->getName()]);
 	}
 
-	public function MainCommand($text){
-		$maincmd = "";
-		$mainend = "";
-		for($number = 1; ; $number++){
-			if(!isset($text[$number]) or $text[$number] === "" or $text[$number] === " "){
-				$mainend = $number;
-				break;
-			}
-			$maincmd .= $text[$number];
-		}
-		return [$maincmd,$mainend];
-	}
-
-	public function SubCommand($text,$amount){
-		$subcmd = "";
-		for($number = $amount; ; $number++){
-			if(!isset($text[$number]) or $text[$number] === "" or $text[$number] === " "){
-				$number = $amount;
-				break;
-			}
-			$subcmd .= $text[$number];
-		}
-		return [$subcmd,$number];
-	}
-
 // Event ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function onPlayerJoin(PlayerJoinEvent $event){
 		$player = $event->getPlayer();
@@ -916,9 +891,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		$username = $player->getName();
 		$text = $event->getMessage();
 		if($text[0] === "/" and $this->config->get("cmd-whitelist")){
-			$Main = $this->MainCommand($text);
-			$Sub = $this->SubCommand($text,$Main[1]+1);
-			$cmdCheck = $this->checkPermission($username,$Main[0],$Sub[0],$this->config->get("notice"),$this->getLogger());
+			$Main = explode(" ", substr($text, 1));
+			if(!isset($Main[1])){
+				$Main[1] = "";
+			}
+			$cmdCheck = $this->checkPermission($username,$Main[0],$Main[1],$this->config->get("notice"));
 			if(!$cmdCheck){
 				$player->sendMessage("You don't have permissions to use this command.");
 				$event->setCancelled(true);
