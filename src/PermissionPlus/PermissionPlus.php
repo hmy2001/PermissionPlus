@@ -125,8 +125,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				switch($config){
 					case "notice":
 						$bool = array_shift($args);
-						$bool = $this->castBool($bool);
-						if($bool === "default"){
+						if(!$this->castBool($bool)){
 							$sender->sendMessage($this->lang->getText("usage")." /ppconfig notice ".$this->lang->getText("usage.onoff")."");
 							break;
 						}
@@ -140,8 +139,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						break;
 					case "autoop":
 						$bool = array_shift($args);
-						$bool = $this->castBool($bool);
-						if($bool === "default"){
+						if(!$this->castBool($bool)){
 							$sender->sendMessage($this->lang->getText("usage")." /ppconfig autoop ".$this->lang->getText("usage.onoff")."");
 							break;
 						}
@@ -156,8 +154,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						break;
 					case "pername":
 						$bool = array_shift($args);
-						$bool = $this->castBool($bool);
-						if($bool === "default"){
+						if(!$this->castBool($bool)){
 							$sender->sendMessage($this->lang->getText("usage")." /ppconfig pername ".$this->lang->getText("usage.onoff")."");
 							break;
 						}
@@ -177,9 +174,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							$sender->sendMessage($this->lang->getText("usage")." /ppconfig lang ".$this->lang->getText("usage.lang")."");
 							break;
 						}
-						if($this->castBool($bool) === "default" and $bool === "PocketMine"){
+						if($bool === "PocketMine"){
 							$bool = $this->getServer()->getProperty("settings.language", "en");
-						}elseif($bool === "default"){
+						}elseif(!$this->castBool($bool)){
 							$sender->sendMessage($this->lang->getText("usage")." /ppconfig lang ".$this->lang->getText("usage.lang")."");
 							break;
 						}
@@ -192,8 +189,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					case "cmdwhitelist":
 					case "cmdw":
 						$bool = array_shift($args);
-						$bool = $this->castBool($bool);
-						if($bool === "default"){
+						if(!$this->castBool($bool)){
 							$sender->sendMessage($this->lang->getText("usage")." /ppconfig cmdwhitelist ".$this->lang->getText("usage.onoff")."");
 							break;
 						}
@@ -348,7 +344,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				if(strlen($pname) === 5){
 					$sender->sendMessage(TextFormat::DARK_BLUE."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE.":  ".$username."");
 				}else{
-					$space = str_repeat(" ", 6-strlen($pname)-1);
+					$space = str_repeat(" ", 5 - strlen($pname));
 					$sender->sendMessage(TextFormat::DARK_BLUE."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE."".$space.":  ".$username."");
 				}
 				break;
@@ -356,7 +352,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				if(strlen($pname) === 5){
 					$sender->sendMessage(TextFormat::DARK_RED."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE.":   ".$username."");
 				}else{
-					$space = str_repeat(" ", 6-strlen($pname)-1);
+					$space = str_repeat(" ", 5 - strlen($pname));
 					$sender->sendMessage(TextFormat::DARK_RED."[".$online."]".TextFormat::GREEN."[".$pname."]".TextFormat::WHITE."".$space.":   ".$username."");
 				}
 				break;
@@ -375,7 +371,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					if($this->config->get("permission")[$prm]){
 						$permission[$prm][$command] ="[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]";
 					}else{
-						$space = str_repeat(" ", 6-strlen($pname)-1);
+						$space = str_repeat(" ", 5 - strlen($pname));
 						$permission[$prm][$command] = "[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]".$space."";
 					}
 				}else{
@@ -409,7 +405,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						if($this->config->get("permission")[$prm]){
 							$permission[$prm][$command."_".$sub] = "[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]";
 						}else{
-							$space =str_repeat(" ", 6-strlen($pname)-1);
+							$space =str_repeat(" ", 5 - strlen($pname));
 							$permission[$prm][$command."_".$sub] = "[".TextFormat::GREEN."".$pname."".TextFormat::WHITE."]" .$space;
 						}
 					}else{
@@ -543,22 +539,24 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		return $output;
 	}
 
-	public function castBool($bool){
+	public function castBool(&$bool){
 		$bool = strtoupper($bool);
 		switch($bool){
 			case "TRUE":
 			case "ON":
 			case "1":
-				return true;
-				break;
+				$bool = true;
+				return $bool;
+			break;
 			case "FALSE":
 			case "OFF":
 			case "0":
-				return false;
-				break;
+				$bool = false;
+				return $bool;
+			break;
 			default:
-				return "default";
-				break;
+				return false;
+			break;
 		}
 	}
 
