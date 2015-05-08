@@ -176,9 +176,6 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						}
 						if($bool === "PocketMine"){
 							$bool = $this->getServer()->getProperty("settings.language", "en");
-						}elseif(!$this->castBool($bool)){
-							$sender->sendMessage($this->lang->getText("usage")." /ppconfig lang ".$this->lang->getText("usage.lang")."");
-							break;
 						}
 						if($this->lang->LoadLang($bool)){
 							$this->getLogger()->info($this->lang->getText("select.lang"));
