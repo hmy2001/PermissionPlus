@@ -698,17 +698,21 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 
 	public function FormatConfig(){
 		if(file_exists($this->getDataFolder(). "Account.yml") and file_exists($this->getDataFolder(). "Permission.yml") and file_exists($this->getDataFolder(). "Command.yml")){
-			$Permission = new Config($this->getDataFolder()."Permission.yml", CONFIG::YAML);
-			$Command = new Config($this->getDataFolder()."Command.yml", CONFIG::YAML);
-			$Account = new Config($this->getDataFolder()."Account.yml", CONFIG::YAML);
-			foreach($Permission->getAll() as $name => $data){
+			$Permission = yaml_parse(file_get_contents($this->getDataFolder()."Permission.yml"));
+			$Command = yaml_parse(file_get_contents($this->getDataFolder()."Command.yml"));
+			$Account = yaml_parse(file_get_contents($this->getDataFolder()."Account.yml"));
+			if($Permission === false or $Command === false or $Account === false){
+				$this->getLogger()->info("".$this->lang->getText("import.error")."");
+				break;
+			}
+			foreach($Permission as $name => $data){
 				$this->config->set($name,$data);
 			}
-			foreach($Command->getAll() as $name => $data){
+			foreach($Command as $name => $data){
 				$this->config->set($name,$data);
 			}
 			$players = $this->config->get("player");
-			foreach($Account->getAll() as $username => $per){
+			foreach($Account as $username => $per){
 				$players[$username] = $per["Permission"];
 			}
 			$this->config->set("player",$players);
