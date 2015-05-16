@@ -53,7 +53,7 @@ Omattyao氏のブログから引用：
 * 1.0.5
 * 1.0.6
 * 1.0.7
-    * 他のプラグインからのコマンドを拒否（このようなコードを無効化：の$ this - > API->コンソール - >ファイル名を指定して実行（"ppplayer steve admin", "console"）)
+    * 他のプラグインからのコマンドを拒否（このようなコードを無効化：の$this->api->console->run("ppplayer steve admin", "console"))
     * 不具合修正
 
 * 1.0.8
