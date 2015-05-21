@@ -104,6 +104,5 @@ Omattyao氏のブログから引用：
 
 * 1.5.0
     * コードの最適化
-    * ConfigをJsonに変更？
 
 Omattyao氏ThankYou!
