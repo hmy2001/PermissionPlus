@@ -1,7 +1,7 @@
 name: PermissionPlus
 main: PermissionPlus\PermissionPlus
 version: 1.5.0
-api: [1.10.0]
+api: [1.12.0]
 load: STARTUP
 author: Hmy2001
 authors: [Hmy2001]
