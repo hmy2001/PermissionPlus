@@ -285,7 +285,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		foreach($this->getPermissions() as $permission){
 			$newcmd = $this->config->get('command')[$permission];
 			$newcmd[$command] = $return[$permission];
-			$this->config->set("command", array_merge($this->config->get("command"), array($permission => $newcmd)));
+			$this->config->set("command", array_merge($this->config->get("command"), [$permission => $newcmd]));
 			$this->config->save();
 		}
 		if(empty($msg)){
@@ -317,7 +317,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		foreach($this->getPermissions() as $permission){
 			$newcmd = $this->config->get('subcmd')[$permission];
 			$newcmd[$cmd][$sub] = $return[$permission];
-			$this->config->set("subcmd", array_merge($this->config->get("subcmd"), array($permission => $newcmd)));
+			$this->config->set("subcmd", array_merge($this->config->get("subcmd"), [$permission => $newcmd]));
 			$this->config->save();
 		}
 		if(empty($msg)){
@@ -728,17 +728,17 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	public function addPermission($permission){
 		$permission = strtoupper($permission);
 		$permissions = $this->getPermissions();
-		if(!in_array($permission, array_merge(array("g", "t", "a"), $permissions))){
-			$this->config->set("permission", array_merge($this->config->get("permission"), array($permission => false)));
-			$this->config->set("command", array_merge($this->config->get("command"), array($permission => array_fill_keys($this->getCommands(),false))));
-			$this->config->set("subcmd", array_merge($this->config->get("subcmd"), array($permission => [])));
+		if(!in_array($permission, array_merge(["g", "t", "a"], $permissions))){
+			$this->config->set("permission", array_merge($this->config->get("permission"), [$permission => false]));
+			$this->config->set("command", array_merge($this->config->get("command"), [$permission => array_fill_keys($this->getCommands(), false)]));
+			$this->config->set("subcmd", array_merge($this->config->get("subcmd"), [$permission => []]));
 			$new_cmd = [];
 			foreach($this->config->get("subcmd")["ADMIN"] as $cmd => $subcmds){
 				$new_cmd[$cmd] = [];
 				foreach(array_keys($subcmds) as $sub){
 					$new_cmd[$cmd][$sub] = false;
 				}
-				$this->config->set("subcmd", array_merge($this->config->get("subcmd"), array($permission => $new_cmd)));
+				$this->config->set("subcmd", array_merge($this->config->get("subcmd"), [$permission => $new_cmd]));
 			}
 			$this->config->save();
 			return true;
