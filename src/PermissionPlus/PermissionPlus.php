@@ -35,7 +35,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$lang = $this->config->get("lang");
 		}
 		if(\Phar::running(true) !== ""){
-			$this->lang = new Lang(\Phar::running(true) . "/src/PermissionPlus/lang/");
+			$this->lang = new Lang(\Phar::running(true)."/src/PermissionPlus/lang/");
 		}else{
 			$this->lang = new Lang($this->getDataFolder()."src/PermissionPlus/lang/");
 		}
@@ -359,7 +359,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 
 	public function showCPermissionsList($sender){
 		$output ="";
-		$permission = array();
+		$permission = [];
 		$clist = $this->config->get('command');
 		foreach($this->getPermissions() as $prm){
 			$pname = substr($prm, 0, 5);
@@ -392,7 +392,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 
 	public function showSPermissionsList($sender){
 		$output = "";
-		$permission = array();
+		$permission = [];
 		$clist = $this->config->get('subcmd');
 		foreach($this->getPermissions() as $prm){
 			$pname = substr($prm, 0, 5);
@@ -559,25 +559,25 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 
 // Config ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function CreateConfig(){
-		$this->config = new Config($this->getDataFolder()."config.yml", CONFIG::YAML, array(
+		$this->config = new Config($this->getDataFolder()."config.yml", CONFIG::YAML, [
 			"notice" => true,
 			"autoop" => false,
 			"PerName" => false,
 			"lang" => "en",
 			"cmd-whitelist" => true,
-			"player" => array(),
-			"permission" => array(
+			"player" => [],
+			"permission" => [
 				"GUEST" => true,
 				"TRUST" => true,
 				"ADMIN" => true,
-				),
-			"subcmd" => array(
-				"ADMIN" => array(),
-				"TRUST" => array(),
-				"GUEST" => array(),
-				),
-			"command" => array(
-				"ADMIN" => array(
+				],
+			"subcmd" => [
+				"ADMIN" => [],
+				"TRUST" => [],
+				"GUEST" => [],
+				],
+			"command" => [
+				"ADMIN" => [
 					'ban' => true,
 					'ban-ip' => true,
 					'banlist' => true,
@@ -614,8 +614,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					'ppplayer' => true,
 					'ppcommand' => true,
 					'ppconfig' => true,
-				),
-				"TRUST" => array(
+				],
+				"TRUST" => [
 					'ban' => false,
 					'ban-ip' => false,
 					'banlist' => false,
@@ -652,8 +652,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					'ppplayer' => false,
 					'ppcommand' => false,
 					'ppconfig' => false,
-				),
-				"GUEST" => array(
+				],
+				"GUEST" => [
 					'ban' => false,
 					'ban-ip' => false,
 					'banlist' => false,
@@ -690,9 +690,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					'ppplayer' => false,
 					'ppcommand' => false,
 					'ppconfig' => false,
-				),
-			),
-		));
+				],
+			],
+		]);
 		$this->config->save();
 	}
 
@@ -731,7 +731,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		if(!in_array($permission, array_merge(array("g", "t", "a"), $permissions))){
 			$this->config->set("permission", array_merge($this->config->get("permission"), array($permission => false)));
 			$this->config->set("command", array_merge($this->config->get("command"), array($permission => array_fill_keys($this->getCommands(),false))));
-			$this->config->set("subcmd", array_merge($this->config->get("subcmd"), array($permission => array())));
+			$this->config->set("subcmd", array_merge($this->config->get("subcmd"), array($permission => [])));
 			$new_cmd = [];
 			foreach($this->config->get("subcmd")["ADMIN"] as $cmd => $subcmds){
 				$new_cmd[$cmd] = [];
