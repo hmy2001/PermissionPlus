@@ -26,11 +26,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		if(!file_exists($this->getDataFolder())) mkdir($this->getDataFolder());
 		$this->CreateConfig();
 		if($this->config->get("lang") === "PocketMine"){
-			if($this->getServer()->getCodename() === "活発(Kappatsu)フグ(Fugu)"){
-				$lang = $this->getServer()->getProperty("settings.language", "en");
-			}else{
-				$lang = "en";
-			}
+			$lang = $this->getServer()->getProperty("settings.language", "en");
 		}else{
 			$lang = $this->config->get("lang");
 		}
