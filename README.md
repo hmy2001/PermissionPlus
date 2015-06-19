@@ -104,5 +104,6 @@ Omattyao氏のブログから引用：
 
 * 1.5.0
     * コードの最適化
+    * PocketMine-MP-1.5に対応
 
 Omattyao氏ThankYou!

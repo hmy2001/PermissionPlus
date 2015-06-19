@@ -13,6 +13,7 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 
 use pocketmine\event\Listener;
+use pocketmine\event\TranslationContainer;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
@@ -892,7 +893,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			}
 			$cmdCheck = $this->checkPermission($username,$Main[0],$Main[1],$this->config->get("notice"));
 			if(!$cmdCheck){
-				$player->sendMessage("You don't have permissions to use this command.");
+				$player->sendMessage(new TranslationContainer(TextFormat::RED."%commands.generic.permission"));
 				$event->setCancelled(true);
 			}
 		}
