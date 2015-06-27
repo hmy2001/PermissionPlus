@@ -106,4 +106,7 @@ Omattyao氏のブログから引用：
     * コードの最適化
     * PocketMine-MP-1.5に対応
 
+* 1.5.1
+    * プレイヤーに権限を設定する処理を改善
+
 Omattyao氏ThankYou!

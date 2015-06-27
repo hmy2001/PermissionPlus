@@ -46,7 +46,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$this->getLogger()->info($this->lang->getText("select.lang"));
 		}
 		$this->FormatConfig();
-		$this->alias = [];
+		$this->ResetPermissions();
 	}
 
 	public function onDisable(){
@@ -99,6 +99,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				}
 				$this->setCPermission($command,$args,$sender);
 				$this->config->save();
+				$this->ResetPermissions();
 				foreach(Server::getInstance()->getOnlinePlayers() as $player){
 					$this->setPermission($player);
 				}
@@ -204,6 +205,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						}
 						if($this->addPermission($name)){
 							$sender->sendMessage("[Permission+] ".$this->lang->getText("success")."");
+							$this->ResetPermissions();
 						}else{
 							$sender->sendMessage("[Permission+] ".$this->lang->transactionText("failed", [$this->lang->getText("add")]));
 						}
@@ -218,6 +220,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						if($this->removePermission($name)){
 							$sender->sendMessage("[Permission+] ".$this->lang->getText("success")."");
 							$this->ResetPermission($name);
+							$this->ResetPermissions();
 							foreach(Server::getInstance()->getOnlinePlayers() as $player){
 								$this->changeName($player);
 								$this->setPermission($player);
@@ -787,17 +790,21 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$attachment = $this->getAttachment($player);
 			$attachment->clearPermissions();
 			$per = $this->getUserPermission($player->getName());
-			$old_alias = [];
-			if(isset($this->alias[$per])){
-				$old_alias[$per] = $this->alias[$per];
-			}else{
-				$old_alias[$per] = [];
+			foreach($this->Commands[$per] as $cmd => $flag){
+				$attachment->setPermission($cmd, $flag);
 			}
-			$this->alias[$per] = [];
-			foreach($this->config->get('command')[$per] as $new_perm => $en){
-				$command = $this->getServer()->getCommandMap()->getCommand($new_perm);
+			$player->recalculatePermissions();
+		}
+	}
+
+	public function ResetPermissions(){
+		$this->alias = [];
+		$this->Commands = [];
+		foreach($this->config->get('command') as $per => $cmd_perms){
+			foreach($cmd_perms as $cmd => $flag){
+				$command = $this->getServer()->getCommandMap()->getCommand($cmd);
 				if($command instanceof Command){
-					if($en){
+					if($flag){
 						foreach($command->getAliases() as $alias){
 							$this->alias[$per][$alias] = true;
 						}
@@ -805,7 +812,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							$this->alias[$per][$command->getName()] = true;
 						}
 						$command->setPermission("permissionplus.command.".$command->getName()."");
-						$attachment->setPermission($command->getPermission(),true);
+						$this->Commands[$per][$command->getPermission()] = true;
 					}else{
 						foreach($command->getAliases() as $alias){
 							$this->alias[$per][$alias] = false;
@@ -814,19 +821,19 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							$this->alias[$per][$command->getName()] = false;
 						}
 						$command->setPermission("permissionplus.command.".$command->getName()."");
-						$attachment->setPermission($command->getPermission(),false);
+						$this->Commands[$per][$command->getPermission()] = false;
 					}
 				}else{
-					$command = $this->getPermission($new_perm);
+					$command = $this->getPermission($cmd);
 					if($command instanceof Command){
-						if($en){
+						if($flag){
 							foreach($command->getAliases() as $alias){
 								$this->alias[$per][$alias] = true;
 							}
 							if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
 								$this->alias[$per][$command->getName()] = true;
 							}
-							$attachment->setPermission($command->getPermission(),true);
+							$this->Commands[$per][$command->getPermission()] = true;
 						}else{
 							foreach($command->getAliases() as $alias){
 								$this->alias[$per][$alias] = false;
@@ -834,12 +841,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
 								$this->alias[$per][$command->getName()] = false;
 							}
-							$attachment->setPermission($command->getPermission(),false);
+							$this->Commands[$per][$command->getPermission()] = false;
 						}
 					}
 				}
 			}
-			$player->recalculatePermissions();
 		}
 	}
 
