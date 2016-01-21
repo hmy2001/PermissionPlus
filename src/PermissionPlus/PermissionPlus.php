@@ -19,7 +19,6 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
-
 	private $attachment = [];
 
 	public function onEnable(){
@@ -53,7 +52,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		$this->config->save();
 	}
 
-// コマンド ///////////////////////////////////////////////////////////////////////////////////////////////////
+	// コマンド ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function onCommand(CommandSender $sender, Command $command, $label, array $args){
 		$username = $sender->getName();
 		switch($command->getName()){
@@ -244,7 +243,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		return true;
 	}
 
-// 他の処理 ///////////////////////////////////////////////////////////////////////////////////////////////////
+	// 他の処理 ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function setPPermission($player, $permission,$sender){
 		if(!$this->castPermission($permission)){
 			$msg = $this->permissionUsage("p");
@@ -427,9 +426,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		}
 	}
 
-	public function checkPermission($player,$cmd,$sub,$notice){
+	public function checkPermission($player, $cmd, $sub, $notice){
 		$permission = $this->getUserPermission($player);
-		if($notice and !isset($this->config->get('command')['ADMIN'][$cmd])){
+		if($notice and !isset($this->config->get("command")["ADMIN"][$cmd])){
 			$this->getLogger()->info("".$this->lang->transactionText("per.not", ["\"/".$cmd."\""])."");
 			$this->getLogger()->info($this->lang->getText("usage")." /ppcommand ".$cmd." (g) (t) (a)");
 		}
@@ -506,7 +505,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 					return $permission;
 				}
 				return false;
-				break;
+			break;
 		}
 		return true;
 	}
@@ -532,6 +531,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				break;
 			default:
 				return false;
+			break;
 		}
 		return $output;
 	}
@@ -543,21 +543,20 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			case "ON":
 			case "1":
 				$bool = true;
-				return $bool;
 			break;
 			case "FALSE":
 			case "OFF":
 			case "0":
 				$bool = false;
-				return $bool;
 			break;
 			default:
 				return false;
 			break;
 		}
+		return true;
 	}
 
-// Config ///////////////////////////////////////////////////////////////////////////////////////////////////
+	// Config ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function CreateConfig(){
 		$this->config = new Config($this->getDataFolder()."config.yml", CONFIG::YAML, [
 			"notice" => true,
@@ -715,12 +714,12 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			foreach($Account as $username => $per){
 				$players[$username] = $per["Permission"];
 			}
-			$this->config->set("player",$players);
+			$this->config->set("player", $players);
 			$this->config->save();
 			if(unlink($this->getDataFolder()."Account.yml") and unlink($this->getDataFolder()."Permission.yml") and unlink($this->getDataFolder()."Command.yml")){
-				$this->getLogger()->info("".$this->lang->getText("import.success")."");
+				$this->getLogger()->info($this->lang->getText("import.success"));
 			}else{
-				$this->getLogger()->info("".$this->lang->getText("import.error")."");
+				$this->getLogger()->info($this->lang->getText("import.error"));
 			}
 		}
 	}
@@ -775,7 +774,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		$this->config->save();
 	}
 
-// CommandPermission関連 ///////////////////////////////////////////////////////////////////////////////////////////////////
+	// CommandPermission関連 ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function getPermission($permission){
 		foreach($this->getServer()->getCommandMap()->getCommands() as $command){
 			if($command->getPermission() === $permission){
@@ -808,8 +807,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						foreach($command->getAliases() as $alias){
 							$this->alias[$per][$alias] = true;
 						}
-						if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
-							$this->alias[$per][$command->getName()] = true;
+						if(strstr($command->getPermission(),';') or isset($old_alias[$per][strtolower($command->getName())])){
+							$this->alias[$per][strtolower($command->getName())] = true;
 						}
 						$command->setPermission("permissionplus.command.".$command->getName()."");
 						$this->Commands[$per][$command->getPermission()] = true;
@@ -817,8 +816,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 						foreach($command->getAliases() as $alias){
 							$this->alias[$per][$alias] = false;
 						}
-						if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
-							$this->alias[$per][$command->getName()] = false;
+						if(strstr($command->getPermission(),';') or isset($old_alias[$per][strtolower($command->getName())])){
+							$this->alias[$per][strtolower($command->getName())] = false;
 						}
 						$command->setPermission("permissionplus.command.".$command->getName()."");
 						$this->Commands[$per][$command->getPermission()] = false;
@@ -830,16 +829,16 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 							foreach($command->getAliases() as $alias){
 								$this->alias[$per][$alias] = true;
 							}
-							if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
-								$this->alias[$per][$command->getName()] = true;
+							if(strstr($command->getPermission(),';') or isset($old_alias[$per][strtolower($command->getName())])){
+								$this->alias[$per][strtolower($command->getName())] = true;
 							}
 							$this->Commands[$per][$command->getPermission()] = true;
 						}else{
 							foreach($command->getAliases() as $alias){
 								$this->alias[$per][$alias] = false;
 							}
-							if(strstr($command->getPermission(),';') or isset($old_alias[$per][$command->getName()])){
-								$this->alias[$per][$command->getName()] = false;
+							if(strstr($command->getPermission(),';') or isset($old_alias[$per][strtolower($command->getName())])){
+								$this->alias[$per][strtolower($command->getName())] = false;
 							}
 							$this->Commands[$per][$command->getPermission()] = false;
 						}
@@ -861,7 +860,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		unset($this->attachment[$player->getName()]);
 	}
 
-// Event ///////////////////////////////////////////////////////////////////////////////////////////////////
+	// Event ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function onPlayerJoin(PlayerJoinEvent $event){
 		$player = $event->getPlayer();
 		$username = $player->getName();
@@ -897,7 +896,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			if(!isset($Main[1])){
 				$Main[1] = "";
 			}
-			$cmdCheck = $this->checkPermission($username,$Main[0],$Main[1],$this->config->get("notice"));
+			$cmdCheck = $this->checkPermission($username, strtolower($Main[0]), strtolower($Main[1]), $this->config->get("notice"));
 			if(!$cmdCheck){
 				$player->sendMessage(new TranslationContainer(TextFormat::RED."%commands.generic.permission"));
 				$event->setCancelled(true);
@@ -905,7 +904,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		}
 	}
 
-// 名前変更 ///////////////////////////////////////////////////////////////////////////////////////////////////
+	// 名前変更 ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function changeNametoEveryone(){
 		foreach(Server::getInstance()->getOnlinePlayers() as $player){
 			$username = $player->getName();

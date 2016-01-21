@@ -1,0 +1,132 @@
+---
+notice: true
+autoop: false
+PerName: false
+lang: en
+cmd-whitelist: true
+player:
+  Hmy2001: GUEST
+  Hmy2001_ipad: GUEST
+  StevePi_0: GUEST
+  doremiss: GUEST
+permission:
+  GUEST: true
+  TRUST: true
+  ADMIN: true
+subcmd:
+  ADMIN: []
+  TRUST: []
+  GUEST: []
+command:
+  ADMIN:
+    ban: true
+    ban-ip: true
+    banlist: true
+    defaultgamemode: true
+    deop: true
+    difficulty: true
+    gamemode: true
+    give: true
+    help: true
+    kick: true
+    kill: true
+    list: true
+    me: true
+    op: true
+    pardon: true
+    pardon-ip: true
+    plugins: true
+    reload: true
+    save-all: true
+    save-off: true
+    save-on: true
+    say: true
+    seed: true
+    setworldspawn: true
+    spawnpoint: true
+    status: true
+    stop: true
+    tell: true
+    time: true
+    timings: true
+    tp: true
+    version: true
+    whitelist: true
+    ppplayer: true
+    ppcommand: true
+    ppconfig: true
+  TRUST:
+    ban: false
+    ban-ip: false
+    banlist: false
+    defaultgamemode: false
+    deop: true
+    difficulty: false
+    gamemode: false
+    give: true
+    help: true
+    kick: true
+    kill: false
+    list: true
+    me: true
+    op: true
+    pardon: false
+    pardon-ip: false
+    plugins: true
+    reload: true
+    save-all: false
+    save-off: false
+    save-on: false
+    say: true
+    seed: true
+    setworldspawn: true
+    spawnpoint: true
+    status: true
+    stop: false
+    tell: true
+    time: true
+    timings: true
+    tp: true
+    version: false
+    whitelist: false
+    ppplayer: false
+    ppcommand: false
+    ppconfig: false
+  GUEST:
+    ban: false
+    ban-ip: false
+    banlist: false
+    defaultgamemode: false
+    deop: false
+    difficulty: false
+    gamemode: false
+    give: false
+    help: false
+    kick: false
+    kill: false
+    list: true
+    me: false
+    op: false
+    pardon: false
+    pardon-ip: false
+    plugins: false
+    reload: false
+    save-all: false
+    save-off: false
+    save-on: false
+    say: false
+    seed: false
+    setworldspawn: false
+    spawnpoint: false
+    status: false
+    stop: false
+    tell: false
+    time: false
+    timings: false
+    tp: false
+    version: false
+    whitelist: false
+    ppplayer: false
+    ppcommand: false
+    ppconfig: false
+...
