@@ -429,7 +429,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	public function checkPermission($player, $cmd, $sub, $notice){
 		$permission = $this->getUserPermission($player);
 		if($notice and !isset($this->config->get("command")["ADMIN"][$cmd])){
-			$this->getLogger()->info("".$this->lang->transactionText("per.not", ["\"/".$cmd."\""])."");
+			$this->getLogger()->info($this->lang->transactionText("per.not", ["\"/".$cmd."\""]));
 			$this->getLogger()->info($this->lang->getText("usage")." /ppcommand ".$cmd." (g) (t) (a)");
 		}
 		if(!empty($sub)){
@@ -701,8 +701,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$Command = yaml_parse(file_get_contents($this->getDataFolder()."Command.yml"));
 			$Account = yaml_parse(file_get_contents($this->getDataFolder()."Account.yml"));
 			if($Permission === false or $Command === false or $Account === false){
-				$this->getLogger()->info("".$this->lang->getText("import.error")."");
-				break;
+				$this->getLogger()->info($this->lang->getText("import.error"));
+				return;
 			}
 			foreach($Permission as $name => $data){
 				$this->config->set($name,$data);
