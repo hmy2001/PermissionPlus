@@ -702,7 +702,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$Account = yaml_parse(file_get_contents($this->getDataFolder()."Account.yml"));
 			if($Permission === false or $Command === false or $Account === false){
 				$this->getLogger()->info($this->lang->getText("import.error"));
-				return;
+				return false;
 			}
 			foreach($Permission as $name => $data){
 				$this->config->set($name,$data);
