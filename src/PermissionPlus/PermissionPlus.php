@@ -81,6 +81,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				$player = $sender->getServer()->getPlayerExact($player);
 				if($player instanceof Player){
 					$this->setPermission($player);
+					if(method_exists($player, "sendCommandData")){
+						$player->sendCommandData();
+					}
 					if($this->config->get("PerName")){
 						$this->changeName($player);
 					}
@@ -101,6 +104,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 				$this->ResetPermissions();
 				foreach(Server::getInstance()->getOnlinePlayers() as $player){
 					$this->setPermission($player);
+					if(method_exists($player, "sendCommandData")){
+						$player->sendCommandData();
+					}
 				}
 				break;
 			case "ppsub":
