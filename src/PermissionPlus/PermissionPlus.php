@@ -53,7 +53,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	}
 
 	// コマンド ///////////////////////////////////////////////////////////////////////////////////////////////////
-	public function onCommand(CommandSender $sender, Command $command, $label, array $args){
+	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 		$username = $sender->getName();
 		switch($command->getName()){
 			case "pp":
