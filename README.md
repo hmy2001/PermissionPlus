@@ -122,4 +122,7 @@ Omattyao氏のブログから引用：
 * 1.5.6
     * コマンドリスト更新機能削除、APIを更新
 
+* 1.5.7
+    * APIを更新
+
 Omattyao氏ThankYou!
