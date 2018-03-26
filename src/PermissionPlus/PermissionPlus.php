@@ -33,7 +33,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		if(\Phar::running(true) !== ""){
 			$this->lang = new Lang(\Phar::running(true)."/src/PermissionPlus/lang/");
 		}else{
-			$this->lang = new Lang($this->getDataFolder()."src/PermissionPlus/lang/");
+			$this->lang = new Lang($this->getFile()."src/PermissionPlus/lang/");
 		}
 		if(!$this->lang->LoadLang($lang)){
 			if($this->lang->LoadLang("en")){

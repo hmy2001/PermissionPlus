@@ -125,4 +125,8 @@ Omattyao氏のブログから引用：
 * 1.5.7
     * APIを更新
 
+* 1.5.7
+    * APIを更新
+    * 不具合修正
+
 Omattyao氏ThankYou!
