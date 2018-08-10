@@ -129,4 +129,8 @@ Omattyao氏のブログから引用：
     * APIを更新
     * 不具合修正
 
+* 1.5.8
+* 1.5.9
+    * APIを更新
+
 Omattyao氏ThankYou!
