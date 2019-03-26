@@ -1,12 +1,11 @@
 name: PermissionPlus
 main: PermissionPlus\PermissionPlus
-version: 1.6.0
+version: 1.6.1
 api: [3.0.0]
 load: STARTUP
 author: Hmy2001
 commands:
  pp:
-  aliases: [pp]
   description: PermissionPlus help
  ppplayer:
   aliases: [ppplyr]

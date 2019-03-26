@@ -10,6 +10,7 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\lang\BaseLang;
+use pocketmine\permission\PermissionAttachment;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\Player;
@@ -559,141 +560,149 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 
 	// Config ///////////////////////////////////////////////////////////////////////////////////////////////////
 	public function CreateConfig(){
-		$this->getConfig()->setAll([
-			"notice" => true,
-			"autoop" => false,
-			"PerName" => false,
-			"lang" => "eng",
-			"cmd-whitelist" => true,
-			"player" => [],
-			"permission" => [
-				"GUEST" => true,
-				"TRUST" => true,
-				"ADMIN" => true,
+		if(!$this->getConfig()->exists("command")){
+			$this->getConfig()->setAll([
+				"notice" => true,
+				"autoop" => false,
+				"PerName" => false,
+				"lang" => "eng",
+				"cmd-whitelist" => true,
+				"player" => [],
+				"permission" => [
+					"GUEST" => true,
+					"TRUST" => true,
+					"ADMIN" => true,
 				],
-			"subcmd" => [
-				"ADMIN" => [],
-				"TRUST" => [],
-				"GUEST" => [],
+				"subcmd" => [
+					"ADMIN" => [],
+					"TRUST" => [],
+					"GUEST" => [],
 				],
-			"command" => [
-				"ADMIN" => [
-					'ban' => true,
-					'ban-ip' => true,
-					'banlist' => true,
-					'defaultgamemode' => true,
-					'deop' => true,
-					'difficulty' => true,
-					'gamemode' => true,
-					'give' => true,
-					'help' => true,
-					'kick' => true,
-					'kill' => true,
-					'list' => true,
-					'me' => true,
-					'op' => true,
-					'pardon' => true,
-					'pardon-ip' => true,
-					'plugins' => true,
-					'reload' => true,
-					'save-all' => true,
-					'save-off' => true,
-					'save-on' => true,
-					'say' =>true,
-					'seed' => true,
-					'setworldspawn' => true,
-					'spawnpoint' => true,
-					'status' => true,
-					'stop' => true,
-					'tell' => true,
-					'time' => true,
-					'timings' => true,
-					'tp' => true,
-					'version' => true,
-					'whitelist' => true,
-					'ppplayer' => true,
-					'ppcommand' => true,
-					'ppconfig' => true,
+				"command" => [
+					"ADMIN" => [
+						'ban' => true,
+						'ban-ip' => true,
+						'banlist' => true,
+						'defaultgamemode' => true,
+						'deop' => true,
+						'difficulty' => true,
+						'gamemode' => true,
+						'give' => true,
+						'help' => true,
+						'kick' => true,
+						'kill' => true,
+						'list' => true,
+						'me' => true,
+						'op' => true,
+						'pardon' => true,
+						'pardon-ip' => true,
+						'plugins' => true,
+						'reload' => true,
+						'save-all' => true,
+						'save-off' => true,
+						'save-on' => true,
+						'say' =>true,
+						'seed' => true,
+						'setworldspawn' => true,
+						'spawnpoint' => true,
+						'status' => true,
+						'stop' => true,
+						'tell' => true,
+						'time' => true,
+						'timings' => true,
+						'tp' => true,
+						'version' => true,
+						'whitelist' => true,
+						'pp' => true,
+						'ppplayer' => true,
+						'ppcommand' => true,
+						'ppconfig' => true,
+						'ppsub' => true,
+					],
+					"TRUST" => [
+						'ban' => false,
+						'ban-ip' => false,
+						'banlist' => false,
+						'defaultgamemode' => false,
+						'deop' => true,
+						'difficulty' => false,
+						'gamemode' => false,
+						'give' => true,
+						'help' => true,
+						'kick' => true,
+						'kill' => false,
+						'list' => true,
+						'me' => true,
+						'op' => true,
+						'pardon' => false,
+						'pardon-ip' => false,
+						'plugins' => true,
+						'reload' => true,
+						'save-all' => false,
+						'save-off' => false,
+						'save-on' => false,
+						'say' => true,
+						'seed' => true,
+						'setworldspawn' => true,
+						'spawnpoint' => true,
+						'status' => true,
+						'stop' => false,
+						'tell' => true,
+						'time' => true,
+						'timings' => true,
+						'tp' => true,
+						'version' => false,
+						'whitelist' => false,
+						'pp' => false,
+						'ppplayer' => false,
+						'ppcommand' => false,
+						'ppconfig' => false,
+						'ppsub' => false,
+					],
+					"GUEST" => [
+						'ban' => false,
+						'ban-ip' => false,
+						'banlist' => false,
+						'defaultgamemode' => false,
+						'deop' => false,
+						'difficulty' => false,
+						'gamemode' => false,
+						'give' => false,
+						'help' => false,
+						'kick' => false,
+						'kill' => false,
+						'list' => true,
+						'me' => false,
+						'op' => false,
+						'pardon' => false,
+						'pardon-ip' => false,
+						'plugins' => false,
+						'reload' => false,
+						'save-all' => false,
+						'save-off' => false,
+						'save-on' => false,
+						'say' => false,
+						'seed' => false,
+						'setworldspawn' => false,
+						'spawnpoint' => false,
+						'status' => false,
+						'stop' => false,
+						'tell' => false,
+						'time' => false,
+						'timings' => false,
+						'tp' => false,
+						'version' => false,
+						'whitelist' => false,
+						'pp' => false,
+						'ppplayer' => false,
+						'ppcommand' => false,
+						'ppconfig' => false,
+						'ppsub' => false,
+					],
 				],
-				"TRUST" => [
-					'ban' => false,
-					'ban-ip' => false,
-					'banlist' => false,
-					'defaultgamemode' => false,
-					'deop' => true,
-					'difficulty' => false,
-					'gamemode' => false,
-					'give' => true,
-					'help' => true,
-					'kick' => true,
-					'kill' => false,
-					'list' => true,
-					'me' => true,
-					'op' => true,
-					'pardon' => false,
-					'pardon-ip' => false,
-					'plugins' => true,
-					'reload' => true,
-					'save-all' => false,
-					'save-off' => false,
-					'save-on' => false,
-					'say' => true,
-					'seed' => true,
-					'setworldspawn' => true,
-					'spawnpoint' => true,
-					'status' => true,
-					'stop' => false,
-					'tell' => true,
-					'time' => true,
-					'timings' => true,
-					'tp' => true,
-					'version' => false,
-					'whitelist' => false,
-					'ppplayer' => false,
-					'ppcommand' => false,
-					'ppconfig' => false,
-				],
-				"GUEST" => [
-					'ban' => false,
-					'ban-ip' => false,
-					'banlist' => false,
-					'defaultgamemode' => false,
-					'deop' => false,
-					'difficulty' => false,
-					'gamemode' => false,
-					'give' => false,
-					'help' => false,
-					'kick' => false,
-					'kill' => false,
-					'list' => true,
-					'me' => false,
-					'op' => false,
-					'pardon' => false,
-					'pardon-ip' => false,
-					'plugins' => false,
-					'reload' => false,
-					'save-all' => false,
-					'save-off' => false,
-					'save-on' => false,
-					'say' => false,
-					'seed' => false,
-					'setworldspawn' => false,
-					'spawnpoint' => false,
-					'status' => false,
-					'stop' => false,
-					'tell' => false,
-					'time' => false,
-					'timings' => false,
-					'tp' => false,
-					'version' => false,
-					'whitelist' => false,
-					'ppplayer' => false,
-					'ppcommand' => false,
-					'ppconfig' => false,
-				],
-			],
-		]);
-		$this->getConfig()->save();
+			]);
+			$this->getConfig()->save();
+		}
 	}
 
 	public function addPermission($permission){
@@ -727,8 +736,8 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$sper = $this->getConfig()->get("subcmd");
 			unset($cper[$permission]);
 			unset($sper[$permission]);
-			$this->getConfig()->set("command",$cper);
-			$this->getConfig()->set("subcmd",$sper);
+			$this->getConfig()->set("command", $cper);
+			$this->getConfig()->set("subcmd", $sper);
 			$this->getConfig()->save();
 			return true;
 		}
@@ -747,13 +756,14 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 	}
 
 	// CommandPermission関連 ///////////////////////////////////////////////////////////////////////////////////////////////////
-	public function getPermission($permission){
+	public function getPermission($permission): ?Command{
 		foreach($this->getServer()->getCommandMap()->getCommands() as $command){
 			if($command->getPermission() === $permission){
 				return $command;
 			}
 		}
-		return false;
+
+		return null;
 	}
 
 	public function setPermission(Player $player){
@@ -761,8 +771,11 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 			$attachment = $this->getAttachment($player);
 			$attachment->clearPermissions();
 			$per = $this->getUserPermission($player->getName());
-			foreach($this->Commands[$per] as $cmd => $flag){
-				$attachment->setPermission($cmd, $flag);
+			foreach($this->Commands[$per] as $cmd => $value){
+				$permissions = explode(";", $cmd);
+				foreach($permissions as $permission){
+					$attachment->setPermission($permission, $value);
+				}
 			}
 			$player->recalculatePermissions();
 		}
@@ -772,54 +785,31 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		$this->alias = [];
 		$this->Commands = [];
 		foreach($this->getConfig()->get('command') as $per => $cmd_perms){
-			foreach($cmd_perms as $cmd => $flag){
+			foreach($cmd_perms as $cmd => $value){
 				$command = $this->getServer()->getCommandMap()->getCommand($cmd);
-				if($command instanceof Command){
-					if($flag){
-						foreach($command->getAliases() as $alias){
-							$this->alias[$per][$alias] = true;
-						}
-						if(strstr($command->getPermission(),';') or isset($old_alias[$per][strtolower($command->getName())])){
-							$this->alias[$per][strtolower($command->getName())] = true;
-						}
-						$command->setPermission("permissionplus.command.".$command->getName()."");
-						$this->Commands[$per][$command->getPermission()] = true;
-					}else{
-						foreach($command->getAliases() as $alias){
-							$this->alias[$per][$alias] = false;
-						}
-						if(strstr($command->getPermission(),';') or isset($old_alias[$per][strtolower($command->getName())])){
-							$this->alias[$per][strtolower($command->getName())] = false;
-						}
-						$command->setPermission("permissionplus.command.".$command->getName()."");
-						$this->Commands[$per][$command->getPermission()] = false;
-					}
-				}else{
+				if(!($command instanceof Command)){
 					$command = $this->getPermission($cmd);
-					if($command instanceof Command){
-						if($flag){
-							foreach($command->getAliases() as $alias){
-								$this->alias[$per][$alias] = true;
-							}
-							if(strstr($command->getPermission(),';') or isset($old_alias[$per][strtolower($command->getName())])){
-								$this->alias[$per][strtolower($command->getName())] = true;
-							}
-							$this->Commands[$per][$command->getPermission()] = true;
-						}else{
-							foreach($command->getAliases() as $alias){
-								$this->alias[$per][$alias] = false;
-							}
-							if(strstr($command->getPermission(),';') or isset($old_alias[$per][strtolower($command->getName())])){
-								$this->alias[$per][strtolower($command->getName())] = false;
-							}
-							$this->Commands[$per][$command->getPermission()] = false;
-						}
+				}
+
+				if($command instanceof Command){
+					foreach($command->getAliases() as $alias){
+						$this->alias[$per][$alias] = $value;
 					}
+
+					if(is_null($command->getPermission())){
+						$command->setPermission("PermissionPlus.command.".$command->getName());
+					}
+
+					$this->Commands[$per][$command->getPermission()] = $value;
 				}
 			}
 		}
 	}
 
+	/**
+	 * @param Player $player
+	 * @return PermissionAttachment
+	 */
 	public function getAttachment(Player $player){
 		if(!isset($this->attachment[$player->getName()])){
 			$this->attachment[$player->getName()] = $player->addAttachment($this);
@@ -839,7 +829,7 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 		if(!$this->getUserPermission($username)){
 			$players = $this->getConfig()->get("player");
 			$players[$username] = "GUEST";
-			$this->getConfig()->set("player",$players);
+			$this->getConfig()->set("player", $players);
 			$this->getConfig()->save();
 		}
 		if($this->getConfig()->get("autoop")){
