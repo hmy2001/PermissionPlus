@@ -28,8 +28,9 @@ class PermissionPlus extends PluginBase implements Listener, CommandExecutor{
 
 		$prefixPath = $this->getFile();
 		if($this->isPhar()){
-			$prefixPath = \Phar::running(true);
+			$prefixPath = \Phar::running(true)."/";
 		}
+
 		$this->path = $prefixPath."src/PermissionPlus/lang/";
 		$languageList = BaseLang::getLanguageList($this->path);
 
